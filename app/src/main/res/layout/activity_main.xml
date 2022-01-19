@@ -10,11 +10,12 @@
 
     <TextView
         android:id="@+id/tv_item"
+        android:layout_marginTop="20px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="37px" />
+        android:textSize="50px" />
 
     <com.gaoyu.rosechart.RoseChart
         android:id="@+id/chart"
