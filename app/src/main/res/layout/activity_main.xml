@@ -8,6 +8,14 @@
     tools:context=".MainActivity"
     tools:ignore="PxUsage">
 
+    <TextView
+        android:id="@+id/tv_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="37px"
+        android:textColor="@color/black"/>
+
     <com.gaoyu.rosechart.RoseChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
