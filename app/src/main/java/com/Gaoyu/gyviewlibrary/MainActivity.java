@@ -18,7 +18,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     
     private RoseChart mChart;
-    private Button mButton;
+    private Button mBtnChange;
+    private Button mBtnEmpty;
     private TextView mTvItem;
     
     @Override
@@ -27,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         
         mChart = findViewById(R.id.chart);
-        mButton = findViewById(R.id.btn_chart);
+        mBtnChange = findViewById(R.id.btn_chart);
+        mBtnEmpty = findViewById(R.id.btn_empty);
         mTvItem = findViewById(R.id.tv_item);
         
         mTvItem.setText("无");
@@ -40,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
         list.add(new RoseChartData(null, 83, "#FFBBBBBB", 200f));
         mChart.setInsideRadius(50f);
         mChart.setData(list);
-        
-        mButton.setOnClickListener(v -> {
+    
+        mBtnChange.setOnClickListener(v -> {
             list.clear();
             list.add(new RoseChartData(null, (int) (Math.random() * 200), "#FF40A9FF", (float) (Math.random() * 200)));
             list.add(new RoseChartData(null, (int) (Math.random() * 200), "#FF73B13B", (float) (Math.random() * 200)));
@@ -60,6 +62,17 @@ public class MainActivity extends AppCompatActivity {
                 "数值：" +
                 item.getQty();
             mTvItem.setText(builder);
+        });
+        
+        mBtnEmpty.setOnClickListener(v -> {
+            if(mChart.getEmptyAngel() == 0) {
+                mBtnEmpty.setText("不产生空隙");
+                mChart.setEmptyAngel(2);
+            } else {
+                mBtnEmpty.setText("产生空隙");
+                mChart.setEmptyAngel(0);
+            }
+            mChart.reDraw();
         });
     }
 }

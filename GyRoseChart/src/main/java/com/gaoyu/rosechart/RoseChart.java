@@ -58,6 +58,11 @@ public class RoseChart extends View {
     private float maxArcRadius;
     
     /**
+     * 扇形区块间的间隙角度
+     */
+    private float emptyAngel = 0;
+    
+    /**
      * 手势检测器对象
      */
     private GestureDetector mDetector;
@@ -82,6 +87,13 @@ public class RoseChart extends View {
     public RoseChart(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
+    }
+    
+    /**
+     * 重绘
+     */
+    public void reDraw() {
+        invalidate();
     }
     
     /**
@@ -119,6 +131,19 @@ public class RoseChart extends View {
      */
     public void setInsideRadius(float insideRadius) {
         this.insideRadius = insideRadius;
+    }
+    
+    public float getEmptyAngel() {
+        return emptyAngel;
+    }
+    
+    /**
+     * 设置空隙
+     *
+     * @param emptyAngel 空白角度
+     */
+    public void setEmptyAngel(float emptyAngel) {
+        this.emptyAngel = emptyAngel;
     }
     
     /**
@@ -229,7 +254,7 @@ public class RoseChart extends View {
                     arcRadius = maxRadius;
                 }
                 //扫过的角度
-                float crossAngle = (data.get(i).getQty() / totalQty) * 360;
+                float crossAngle = (data.get(i).getQty() / totalQty) * 360 - emptyAngel;
                 //确定包裹外圆的矩形，每个扇形的都不同
                 RectF outsideRectF = new RectF(-arcRadius, -arcRadius, arcRadius, arcRadius);
                 
@@ -247,7 +272,7 @@ public class RoseChart extends View {
                 canvas.drawColor(Color.parseColor(data.get(i).getColor()));
                 canvas.restore();
                 
-                oldAngle = oldAngle + crossAngle;
+                oldAngle = oldAngle + crossAngle + emptyAngel;
                 angelData.add(new AngelData(oldAngle));
                 
                 if (maxArcRadius < arcRadius) {
