@@ -1,6 +1,10 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
+
+group = 'com.github.gy1313113'
+version = '1.0.1'
 
 android {
     compileSdk 31
@@ -24,6 +28,26 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.gy1313113'
+                artifactId = 'RoseChart'
+                version = '1.0.1'
+            }
+        }
+
+        repositories {
+            mavenCentral()
+            google()
+            maven { url "https://jitpack.io" }
+        }
     }
 }
 
