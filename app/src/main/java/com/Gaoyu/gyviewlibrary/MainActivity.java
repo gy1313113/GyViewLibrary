@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
                 "数值：" +
                 item.getQty();
             mTvItem.setText(builder);
+            if(list.get(position).getOffset() == 0) {
+                list.get(position).setOffset(40);
+            } else {
+                list.get(position).setOffset(0);
+            }
+            mChart.setData(list);
         });
         
         mBtnEmpty.setOnClickListener(v -> {

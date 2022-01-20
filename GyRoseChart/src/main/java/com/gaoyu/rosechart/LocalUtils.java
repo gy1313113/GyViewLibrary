@@ -60,4 +60,34 @@ class LocalUtils {
         double c = Math.sqrt(dx * dx + dy * dy);
         return c > smallRadius && c < bigRadius;
     }
+    
+    /**
+     * 返回X轴偏移距离
+     *
+     * @param offset     设置的偏移距离
+     * @param oldAngel   扇形起始角度
+     * @param crossAngel 扇形跨越的角度
+     * @return X轴偏移距离
+     */
+    public static float offsetX(float offset, float oldAngel, float crossAngel) {
+        //计算方向角
+        float angel = oldAngel + crossAngel / 2;
+        //注意此时坐标轴已经被逆时针旋转了90度
+        return offset * (float) Math.cos(Math.toRadians(angel));
+    }
+    
+    /**
+     * 返回Y轴偏移距离
+     *
+     * @param offset     设置的偏移距离
+     * @param oldAngel   扇形起始角度
+     * @param crossAngel 扇形跨越的角度
+     * @return Y轴偏移距离
+     */
+    public static float offsetY(float offset, float oldAngel, float crossAngel) {
+        //计算方向角
+        float angel = oldAngel + crossAngel / 2;
+        //注意此时坐标轴已经被逆时针旋转了90度
+        return offset * (float) Math.sin(Math.toRadians(angel));
+    }
 }

@@ -27,6 +27,11 @@ public class RoseChartData {
      */
     private float radius;
     
+    /**
+     * 区块飞离中心点的距离(不包括中心圆的)
+     */
+    private float offset;
+    
     public RoseChartData() {
     
     }
@@ -45,6 +50,21 @@ public class RoseChartData {
         this.radius = radius;
     }
     
+    /**
+     *
+     * @param name 区块名称
+     * @param qty 区块数值
+     * @param color 区块颜色(#333333)
+     * @param radius 区块的半径(从圆心到扇形边缘)
+     * @param offset 区块飞离中心点的距离(不包括中心圆的)
+     */
+    public RoseChartData(String name, int qty, String color, float radius, float offset) {
+        this.name = name;
+        this.qty = qty;
+        this.color = color;
+        this.radius = radius;
+        this.offset = offset;
+    }
     
     public String getName() {
         return name;
@@ -76,5 +96,13 @@ public class RoseChartData {
     
     public void setRadius(float radius) {
         this.radius = radius;
+    }
+    
+    public float getOffset() {
+        return offset;
+    }
+    
+    public void setOffset(float offset) {
+        this.offset = offset;
     }
 }

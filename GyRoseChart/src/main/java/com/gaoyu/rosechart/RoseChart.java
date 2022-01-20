@@ -84,6 +84,7 @@ public class RoseChart extends View {
         init();
     }
     
+    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
     public RoseChart(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
@@ -185,7 +186,7 @@ public class RoseChart extends View {
                 float cy = point.y;
                 //计算触摸点相对于圆心的角度
                 float touchAngel = LocalUtils.getTouchedPointAngle(cx, cy, x, y);
-                boolean inTouchArea = LocalUtils.isInDrawArea(cx, cy, x, y, insideRadius, maxArcRadius);
+                boolean inTouchArea = LocalUtils.isInDrawArea(cx, cy, x, y, insideRadius, maxArcRadius + itemMaxOffset());
                 if (angelData != null && inTouchArea) {
                     for (int i = 0; i < angelData.size(); i++) {
                         if (touchAngel < angelData.get(i).getAngel()) {
@@ -267,6 +268,12 @@ public class RoseChart extends View {
                 path.lineTo(0, 0);
                 //取扇形路径中，不与内圆路径相交的部分
                 path.op(insidePath, path, Op.REVERSE_DIFFERENCE);
+                //设置某块区域飞离
+                float distance = data.get(i).getOffset();
+                if (distance != 0) {
+                    path.offset(LocalUtils.offsetX(distance, oldAngle, crossAngle),
+                        LocalUtils.offsetY(distance, oldAngle, crossAngle));
+                }
                 //剪辑路径
                 canvas.clipPath(path);
                 canvas.drawColor(Color.parseColor(data.get(i).getColor()));
@@ -313,5 +320,20 @@ public class RoseChart extends View {
             }
         }
         return count;
+    }
+    
+    /**
+     * 计算最大飞离距离
+     */
+    private float itemMaxOffset() {
+        float max = 0;
+        if (data != null) {
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).getOffset() > max) {
+                    max = data.get(i).getOffset();
+                }
+            }
+        }
+        return max;
     }
 }
