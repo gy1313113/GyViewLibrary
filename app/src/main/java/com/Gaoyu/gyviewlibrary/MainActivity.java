@@ -71,12 +71,12 @@ public class MainActivity extends AppCompatActivity {
         });
         
         mBtnEmpty.setOnClickListener(v -> {
-            if(mChart.getEmptyAngel() == 0) {
-                mBtnEmpty.setText("不产生空隙");
-                mChart.setEmptyAngel(2);
+            if(mChart.getSplitLineWidth() == 0) {
+                mBtnEmpty.setText("不产生分割线");
+                mChart.setSplitLineWidth(8);
             } else {
-                mBtnEmpty.setText("产生空隙");
-                mChart.setEmptyAngel(0);
+                mBtnEmpty.setText("产生分割线");
+                mChart.setSplitLineWidth(0);
             }
             mChart.reDraw();
         });

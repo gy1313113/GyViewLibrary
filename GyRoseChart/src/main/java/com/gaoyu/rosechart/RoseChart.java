@@ -58,9 +58,14 @@ public class RoseChart extends View {
     private float maxArcRadius;
     
     /**
-     * 扇形区块间的间隙角度
+     * 扇形区域间的分割线宽度
      */
-    private float emptyAngel = 0;
+    private float mSplitLineWidth = 0;
+    
+    /**
+     * 扇形区域间的分割线颜色(默认#FFFFFF)
+     */
+    private String mSplitLineColor = "#FFFFFF";
     
     /**
      * 手势检测器对象
@@ -134,17 +139,30 @@ public class RoseChart extends View {
         this.insideRadius = insideRadius;
     }
     
-    public float getEmptyAngel() {
-        return emptyAngel;
+    public float getSplitLineWidth() {
+        return mSplitLineWidth;
     }
     
     /**
-     * 设置空隙
+     * 设置分割线宽度
      *
-     * @param emptyAngel 空白角度
+     * @param splitLineWidth 分割线宽度
      */
-    public void setEmptyAngel(float emptyAngel) {
-        this.emptyAngel = emptyAngel;
+    public void setSplitLineWidth(float splitLineWidth) {
+        mSplitLineWidth = splitLineWidth;
+    }
+    
+    public String getSplitLineColor() {
+        return mSplitLineColor;
+    }
+    
+    /**
+     * 设置分割线颜色
+     *
+     * @param splitLineColor 分割线颜色
+     */
+    public void setSplitLineColor(String splitLineColor) {
+        mSplitLineColor = splitLineColor;
     }
     
     /**
@@ -249,13 +267,13 @@ public class RoseChart extends View {
         float oldAngle = 0;
         if (data != null) {
             for (int i = 0; i < data.size(); i++) {
-                //扇形半径
+                //当前扇形半径
                 float arcRadius = data.get(i).getRadius() + insideRadius;
                 if (arcRadius > maxRadius) {
                     arcRadius = maxRadius;
                 }
                 //扫过的角度
-                float crossAngle = (data.get(i).getQty() / totalQty) * 360 - emptyAngel;
+                float crossAngle = (data.get(i).getQty() / totalQty) * 360;
                 //确定包裹外圆的矩形，每个扇形的都不同
                 RectF outsideRectF = new RectF(-arcRadius, -arcRadius, arcRadius, arcRadius);
                 
@@ -279,11 +297,26 @@ public class RoseChart extends View {
                 canvas.drawColor(Color.parseColor(data.get(i).getColor()));
                 canvas.restore();
                 
-                oldAngle = oldAngle + crossAngle + emptyAngel;
+                //将扇形绘制完成后所停留的角度存起来，之后方便区分点击区域
+                oldAngle = oldAngle + crossAngle;
                 angelData.add(new AngelData(oldAngle));
                 
+                //更新玫瑰图的扇形区域最大半径
                 if (maxArcRadius < arcRadius) {
                     maxArcRadius = arcRadius;
+                }
+            }
+            
+            //绘制分割线
+            if (mSplitLineWidth != 0) {
+                Paint paint = new Paint();
+                paint.setColor(Color.parseColor(mSplitLineColor));
+                paint.setStrokeWidth(mSplitLineWidth);
+                //开启抗锯齿，不然分割线会很粗糙
+                paint.setAntiAlias(true);
+                for (int i = 0; i < angelData.size(); i++) {
+                    canvas.drawLine(0f, 0f, LocalUtils.offsetX(maxArcRadius + itemMaxOffset(), angelData.get(i).getAngel(), 0),
+                        LocalUtils.offsetY(maxArcRadius + itemMaxOffset(), angelData.get(i).getAngel(), 0), paint);
                 }
             }
         }

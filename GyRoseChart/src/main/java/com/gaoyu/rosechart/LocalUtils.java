@@ -66,7 +66,7 @@ class LocalUtils {
      *
      * @param offset     设置的偏移距离
      * @param oldAngel   扇形起始角度
-     * @param crossAngel 扇形跨越的角度
+     * @param crossAngel 扇形跨越的角度(非必填)
      * @return X轴偏移距离
      */
     public static float offsetX(float offset, float oldAngel, float crossAngel) {
@@ -81,7 +81,7 @@ class LocalUtils {
      *
      * @param offset     设置的偏移距离
      * @param oldAngel   扇形起始角度
-     * @param crossAngel 扇形跨越的角度
+     * @param crossAngel 扇形跨越的角度(非必填)
      * @return Y轴偏移距离
      */
     public static float offsetY(float offset, float oldAngel, float crossAngel) {
