@@ -90,4 +90,15 @@ class LocalUtils {
         //注意此时坐标轴已经被逆时针旋转了90度
         return offset * (float) Math.sin(Math.toRadians(angel));
     }
+    
+    /**
+     * 求分割线与圆心所组成的三角形的夹角(默认夹角不超过180度)
+     *
+     * @param radius 圆的半径
+     * @param width  分割线宽
+     * @return 分割线与圆心所组成的三角形的夹角
+     */
+    public static float splitAngel(float radius, float width) {
+        return (float) Math.toDegrees(Math.acos(1 - (width * width) / (2 * (radius * radius))));
+    }
 }

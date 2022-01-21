@@ -266,6 +266,10 @@ public class RoseChart extends View {
         float totalQty = totalQty();
         float oldAngle = 0;
         if (data != null) {
+            //计算预留角度
+            float splitAngel = splitAngel();
+            //总预留角度
+            float allSplitAngel = splitAngel * data.size();
             for (int i = 0; i < data.size(); i++) {
                 //当前扇形半径
                 float arcRadius = data.get(i).getRadius() + insideRadius;
@@ -273,7 +277,7 @@ public class RoseChart extends View {
                     arcRadius = maxRadius;
                 }
                 //扫过的角度
-                float crossAngle = (data.get(i).getQty() / totalQty) * 360;
+                float crossAngle = (data.get(i).getQty() / totalQty) * (360 - allSplitAngel);
                 //确定包裹外圆的矩形，每个扇形的都不同
                 RectF outsideRectF = new RectF(-arcRadius, -arcRadius, arcRadius, arcRadius);
                 
@@ -298,8 +302,8 @@ public class RoseChart extends View {
                 canvas.restore();
                 
                 //将扇形绘制完成后所停留的角度存起来，之后方便区分点击区域
-                oldAngle = oldAngle + crossAngle;
-                angelData.add(new AngelData(oldAngle));
+                oldAngle = oldAngle + crossAngle + splitAngel;
+                angelData.add(new AngelData(oldAngle, splitAngel));
                 
                 //更新玫瑰图的扇形区域最大半径
                 if (maxArcRadius < arcRadius) {
@@ -315,8 +319,8 @@ public class RoseChart extends View {
                 //开启抗锯齿，不然分割线会很粗糙
                 paint.setAntiAlias(true);
                 for (int i = 0; i < angelData.size(); i++) {
-                    canvas.drawLine(0f, 0f, LocalUtils.offsetX(maxArcRadius + itemMaxOffset(), angelData.get(i).getAngel(), 0),
-                        LocalUtils.offsetY(maxArcRadius + itemMaxOffset(), angelData.get(i).getAngel(), 0), paint);
+                    canvas.drawLine(0f, 0f, LocalUtils.offsetX(maxArcRadius + itemMaxOffset(), angelData.get(i).getDrawAngel(), 0),
+                        LocalUtils.offsetY(maxArcRadius + itemMaxOffset(), angelData.get(i).getDrawAngel(), 0), paint);
                 }
             }
         }
@@ -368,5 +372,39 @@ public class RoseChart extends View {
             }
         }
         return max;
+    }
+    
+    /**
+     * 计算扇形最大半径
+     */
+    private float maxArcRadius() {
+        float max = 0;
+        if (data != null) {
+            //可使用的最大半径
+            int maxRadius = Math.min(getWidth(), getHeight()) / 2;
+            for (int i = 0; i < data.size(); i++) {
+                //当前扇形半径
+                float arcRadius = data.get(i).getRadius() + insideRadius;
+                if (arcRadius > maxRadius) {
+                    arcRadius = maxRadius;
+                }
+                if (max < arcRadius) {
+                    max = arcRadius;
+                }
+            }
+        }
+        return max;
+    }
+    
+    /**
+     * 计算预留角度
+     */
+    private float splitAngel() {
+        float angel = 0;
+        if (mSplitLineWidth != 0 && data != null) {
+            //计算分割线与圆心所组成的三角形的夹角，作为预留角度
+            angel = LocalUtils.splitAngel(maxArcRadius(), mSplitLineWidth);
+        }
+        return angel;
     }
 }
