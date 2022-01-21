@@ -157,7 +157,7 @@ public class RoseChart extends View {
     }
     
     /**
-     * 设置分割线颜色
+     * 设置分割线颜色(建议与背景色相同)
      *
      * @param splitLineColor 分割线颜色
      */

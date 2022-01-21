@@ -10,9 +10,9 @@
 
     <TextView
         android:id="@+id/tv_item"
-        android:layout_marginTop="20px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="50px" />
@@ -23,21 +23,61 @@
         android:layout_height="0px"
         android:layout_weight="1" />
 
-    <Button
-        android:id="@+id/btn_empty"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:text="产生分割线"
-        android:textSize="37px" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_chart"
+        <Button
+            android:id="@+id/btn_chart"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="饼图"
+            android:textSize="37px" />
+
+        <View
+            android:layout_width="20px"
+            android:layout_height="match_parent"/>
+
+        <Button
+            android:id="@+id/btn_hole"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="关闭内径"
+            android:textSize="37px" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20px"
-        android:background="@color/black"
-        android:text="随机数据"
-        android:textSize="37px" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_empty"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="产生分割线"
+            android:textSize="37px" />
+
+        <View
+            android:layout_width="20px"
+            android:layout_height="match_parent"/>
+
+        <Button
+            android:id="@+id/btn_data"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="随机数据"
+            android:textSize="37px" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -24,6 +24,7 @@ public class RoseChartData {
     
     /**
      * 区块的半径(从圆心到扇形边缘)
+     * 如果把输入的数据都设成相同的值，就能变成饼图
      */
     private float radius;
     
