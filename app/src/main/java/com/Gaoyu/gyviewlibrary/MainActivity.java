@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         mBtnEmpty.setOnClickListener(v -> {
             if (mChart.getSplitLineWidth() == 0) {
                 mBtnEmpty.setText("不产生分割线");
-                mChart.setSplitLineWidth(8);
+                mChart.setSplitLineWidth(4);
             } else {
                 mBtnEmpty.setText("产生分割线");
                 mChart.setSplitLineWidth(0);

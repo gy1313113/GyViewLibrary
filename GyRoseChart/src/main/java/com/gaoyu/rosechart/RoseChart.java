@@ -144,7 +144,7 @@ public class RoseChart extends View {
     }
     
     /**
-     * 设置分割线宽度
+     * 设置分割线宽度(建议最大4像素，多了影响小数据显示)
      *
      * @param splitLineWidth 分割线宽度
      */
