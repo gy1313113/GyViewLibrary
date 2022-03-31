@@ -10,3 +10,4 @@ dependencyResolutionManagement {
 rootProject.name = "GyViewLibrary"
 include ':app'
 include ':GyRoseChart'
+include ':GyPrograssBar'
