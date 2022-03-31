@@ -47,6 +47,13 @@
         <meta-data
             android:name="unit"
             android:value="px" />
+
+        <activity
+            android:name=".RoseChartActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|layoutDirection|screenSize|screenLayout|locale|uiMode|fontScale"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
