@@ -1,4 +1,4 @@
-package com.Gaoyu.gyviewlibrary;
+package com.gaoyu.gyviewlibrary;
 
 import org.junit.Test;
 

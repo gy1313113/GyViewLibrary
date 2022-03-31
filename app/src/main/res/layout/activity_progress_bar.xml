@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="PxUsage">
+
+    <com.gaoyu.progressbar.RingProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1" />
+
+    <!--<LinearLayout-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:orientation="horizontal">-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_chart"-->
+    <!--        android:layout_width="0px"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:background="@color/black"-->
+    <!--        android:text="饼图"-->
+    <!--        android:textSize="37px" />-->
+
+    <!--    <View-->
+    <!--        android:layout_width="20px"-->
+    <!--        android:layout_height="match_parent"/>-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_hole"-->
+    <!--        android:layout_width="0px"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:background="@color/black"-->
+    <!--        android:text="关闭内径"-->
+    <!--        android:textSize="37px" />-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_marginTop="20px"-->
+    <!--    android:orientation="horizontal">-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_empty"-->
+    <!--        android:layout_width="0px"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:background="@color/black"-->
+    <!--        android:text="产生分割线"-->
+    <!--        android:textSize="37px" />-->
+
+    <!--    <View-->
+    <!--        android:layout_width="20px"-->
+    <!--        android:layout_height="match_parent"/>-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_data"-->
+    <!--        android:layout_width="0px"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:background="@color/black"-->
+    <!--        android:text="随机数据"-->
+    <!--        android:textSize="37px" />-->
+    <!--</LinearLayout>-->
+
+</LinearLayout>

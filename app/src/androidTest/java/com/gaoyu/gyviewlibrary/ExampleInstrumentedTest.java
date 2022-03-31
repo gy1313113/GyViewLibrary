@@ -1,4 +1,4 @@
-package com.Gaoyu.gyviewlibrary;
+package com.gaoyu.gyviewlibrary;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.Gaoyu.gyviewlibrary", appContext.getPackageName());
+        assertEquals("com.gaoyu.gyviewlibrary", appContext.getPackageName());
     }
 }

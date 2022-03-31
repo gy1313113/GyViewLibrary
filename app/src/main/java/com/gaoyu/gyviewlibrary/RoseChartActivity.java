@@ -1,4 +1,4 @@
-package com.Gaoyu.gyviewlibrary;
+package com.gaoyu.gyviewlibrary;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import gaoyu.gyviewlibrary.R;
 
 /**
  * 玫瑰图测试页面

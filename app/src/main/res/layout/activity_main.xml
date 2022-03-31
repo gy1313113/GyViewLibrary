@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
     tools:ignore="PxUsage">
 
     <Button
@@ -13,5 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="115px"
         android:text="玫瑰图、饼图、圆环"/>
+
+    <Button
+        android:id="@+id/btn_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="115px"
+        android:text="进度条"/>
 
 </LinearLayout>
