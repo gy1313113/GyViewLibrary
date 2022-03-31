@@ -1,4 +1,4 @@
-package com.gaoyu.prograssbar;
+package com.gaoyu.progressbar;
 
 import org.junit.Test;
 

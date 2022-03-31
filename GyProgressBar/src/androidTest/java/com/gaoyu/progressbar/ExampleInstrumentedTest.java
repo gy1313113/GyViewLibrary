@@ -1,4 +1,4 @@
-package com.gaoyu.prograssbar;
+package com.gaoyu.progressbar;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.gaoyu.prograssbar.test", appContext.getPackageName());
+        assertEquals("com.gaoyu.progressbar.test", appContext.getPackageName());
     }
 }

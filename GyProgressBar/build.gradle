@@ -38,7 +38,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.github.gy1313113'
-                artifactId = 'PrograssBar'
+                artifactId = 'ProgressBar'
                 version = '1.0.1'
             }
         }
