@@ -1,16 +1,16 @@
 package com.gaoyu.gyviewlibrary;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader.TileMode;
 import android.graphics.SweepGradient;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.gaoyu.progressbar.ProgressConfig;
 import com.gaoyu.progressbar.RingProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import gaoyu.gyviewlibrary.R;
 
 
@@ -22,6 +22,12 @@ import gaoyu.gyviewlibrary.R;
 public class ProgressBarActivity extends AppCompatActivity {
     
     private RingProgressBar mProgressBar;
+    private float startProgress;
+    private float endProgress;
+    private Button mBtnProgress;
+    private Button mBtnClear;
+    private TextView mTvEnd;
+    private TextView mTvNow;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +43,56 @@ public class ProgressBarActivity extends AppCompatActivity {
     
     private void initView() {
         mProgressBar = findViewById(R.id.progress_bar);
+        mBtnProgress = findViewById(R.id.btn_progress);
+        mBtnClear = findViewById(R.id.btn_clear);
+        mTvEnd = findViewById(R.id.tv_end);
+        mTvNow = findViewById(R.id.tv_now);
     }
     
+    @SuppressLint("SetTextI18n")
     private void initData() {
-        int[] color = {Color.RED, Color.YELLOW, Color.GREEN, ContextCompat.getColor(this, R.color.teal_200), Color.BLUE, ContextCompat.getColor(this, R.color.purple_500)};
-        float[] radius = {0, 0.17f, 0.34f, 0.51f, 0.68f, 0.85f};
+        int[] color = {Color.GREEN, Color.RED};
+        float[] radius = {0, 1f};
         ProgressConfig config = mProgressBar.getSetting();
-        config.setBgRingShader(new SweepGradient(0, 0, color, radius));
-        config.setBgDiameter(300f);
-        config.setBgRingWidth(20f);
+        config.setBgRingColor(Color.GRAY);
+        config.setBgDiameter(600f);
+        config.setBgRingWidth(80f);
+        config.setRingShader(new SweepGradient(0, 0, color, radius));
+        mTvEnd.setText(endProgress + "%");
+        mTvNow.setText("0.0" + "%");
     }
     
+    @SuppressLint("SetTextI18n")
     private void initEvent() {
+        mBtnProgress.setOnClickListener(v -> {
+            if (endProgress <= 100) {
+                float randomProgress = endProgress + (float) (100 * Math.random());
+                if (randomProgress > 100) {
+                    randomProgress = 100;
+                }
+                endProgress = randomProgress;
+                mTvEnd.setText(endProgress + "%");
+                animator(endProgress);
+            }
+        });
+        
+        mBtnClear.setOnClickListener(v -> {
+            mProgressBar.stopAnimator();
+            mProgressBar.setProgress(0, 0);
+            startProgress = 0;
+            endProgress = 0;
+            mTvEnd.setText("0.0" + "%");
+            mTvNow.setText("0.0" + "%");
+        });
+    }
     
+    @SuppressLint("SetTextI18n")
+    private void animator(float end) {
+        mProgressBar.setProgress(startProgress, end);
+        float cross = mProgressBar.getCrossProgress();
+        mProgressBar.animator(5000 * (long) cross / 100, (value, progress) -> {
+            startProgress = progress;
+            mTvNow.setText(progress + "%");
+        });
     }
 }

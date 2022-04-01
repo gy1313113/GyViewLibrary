@@ -7,39 +7,69 @@
     android:orientation="vertical"
     tools:ignore="PxUsage">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_end"
+            android:layout_width="0px"
+            android:layout_height="115px"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="37px" />
+
+        <View
+            android:layout_width="20px"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_now"
+            android:layout_width="0px"
+            android:layout_height="115px"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="37px" />
+    </LinearLayout>
+
     <com.gaoyu.progressbar.RingProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1" />
 
-    <!--<LinearLayout-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:orientation="horizontal">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <!--    <Button-->
-    <!--        android:id="@+id/btn_chart"-->
-    <!--        android:layout_width="0px"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_weight="1"-->
-    <!--        android:background="@color/black"-->
-    <!--        android:text="饼图"-->
-    <!--        android:textSize="37px" />-->
+        <Button
+            android:id="@+id/btn_progress"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="随机进度"
+            android:textSize="37px" />
 
-    <!--    <View-->
-    <!--        android:layout_width="20px"-->
-    <!--        android:layout_height="match_parent"/>-->
+        <View
+            android:layout_width="20px"
+            android:layout_height="match_parent" />
 
-    <!--    <Button-->
-    <!--        android:id="@+id/btn_hole"-->
-    <!--        android:layout_width="0px"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_weight="1"-->
-    <!--        android:background="@color/black"-->
-    <!--        android:text="关闭内径"-->
-    <!--        android:textSize="37px" />-->
-    <!--</LinearLayout>-->
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="清空"
+            android:textSize="37px" />
+    </LinearLayout>
 
     <!--<LinearLayout-->
     <!--    android:layout_width="match_parent"-->
