@@ -37,11 +37,25 @@
             android:textSize="37px" />
     </LinearLayout>
 
-    <com.gaoyu.progressbar.RingProgressBar
-        android:id="@+id/progress_bar"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <com.gaoyu.progressbar.RingProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="100px"
+            android:textColor="#FAAD14"/>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

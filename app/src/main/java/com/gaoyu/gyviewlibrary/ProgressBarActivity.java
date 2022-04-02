@@ -3,6 +3,8 @@ package com.gaoyu.gyviewlibrary;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.SweepGradient;
+import android.icu.text.DecimalFormat;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.gaoyu.progressbar.ProgressConfig;
 import com.gaoyu.progressbar.RingProgressBar;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import gaoyu.gyviewlibrary.R;
 
@@ -31,8 +34,11 @@ public class ProgressBarActivity extends AppCompatActivity {
     private Button mBtnHead;
     private TextView mTvEnd;
     private TextView mTvNow;
+    private TextView mTvProgress;
     private ProgressConfig config;
+    private DecimalFormat mFormat;
     
+    @RequiresApi(api = VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +58,10 @@ public class ProgressBarActivity extends AppCompatActivity {
         mBtnHead = findViewById(R.id.btn_head);
         mTvEnd = findViewById(R.id.tv_end);
         mTvNow = findViewById(R.id.tv_now);
+        mTvProgress = findViewById(R.id.tv_progress);
     }
     
+    @RequiresApi(api = VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     private void initData() {
         int[] color = {Color.GREEN, Color.RED};
@@ -65,8 +73,11 @@ public class ProgressBarActivity extends AppCompatActivity {
         config.setRingShader(new SweepGradient(0, 0, color, radius));
         mTvEnd.setText("目标进度:" + endProgress + "%");
         mTvNow.setText("当前进度:" + "0.0" + "%");
+        mTvProgress.setText("0");
+        mFormat = new DecimalFormat("#0");
     }
     
+    @RequiresApi(api = VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     private void initEvent() {
         mBtnProgress.setOnClickListener(v -> {
@@ -88,6 +99,7 @@ public class ProgressBarActivity extends AppCompatActivity {
             endProgress = 0;
             mTvEnd.setText("目标进度:" + "0.0" + "%");
             mTvNow.setText("当前进度:" + "0.0" + "%");
+            mTvProgress.setText("0");
         });
         
         mBtnHead.setOnClickListener(v -> {
@@ -101,6 +113,7 @@ public class ProgressBarActivity extends AppCompatActivity {
         });
     }
     
+    @RequiresApi(api = VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     private void animator(float end) {
         mProgressBar.setProgress(startProgress, end, false);
@@ -108,6 +121,7 @@ public class ProgressBarActivity extends AppCompatActivity {
         mProgressBar.animator(5000 * (long) cross / 100, (value, progress) -> {
             startProgress = progress;
             mTvNow.setText("当前进度:" + progress + "%");
+            mTvProgress.setText(mFormat.format(progress));
         });
     }
 }
