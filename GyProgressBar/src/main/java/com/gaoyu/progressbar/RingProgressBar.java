@@ -6,7 +6,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -34,6 +36,10 @@ public class RingProgressBar extends View implements IProgressBar {
      */
     private float bgRadius;
     /**
+     * 线帽的半径
+     */
+    private float headRadius;
+    /**
      * 背景环的画笔
      */
     private Paint bgRingPaint;
@@ -41,6 +47,14 @@ public class RingProgressBar extends View implements IProgressBar {
      * 环的画笔
      */
     private Paint ringPaint;
+    /**
+     * 线帽的画笔
+     */
+    private Paint headPaint;
+    /**
+     * 线帽的路径
+     */
+    private Path headPath;
     /**
      * 进度条部分属性配置
      */
@@ -85,6 +99,8 @@ public class RingProgressBar extends View implements IProgressBar {
         bgRingPaint.setStyle(Style.STROKE);
         ringPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         ringPaint.setStyle(Style.STROKE);
+        headPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        headPaint.setStyle(Style.FILL);
     }
     
     @Override
@@ -117,19 +133,41 @@ public class RingProgressBar extends View implements IProgressBar {
         if (mConfig.getRingShader() != null) {
             Shader shader = mConfig.getRingShader();
             ringPaint.setShader(shader);
+            headPaint.setShader(shader);
         } else {
             ringPaint.setColor(mConfig.getRingColor());
+            headPaint.setColor(mConfig.getRingColor());
         }
         ringPaint.setStrokeWidth(mConfig.getBgRingWidth());
         RectF f = new RectF(-bgRadius, -bgRadius, bgRadius, bgRadius);
         //原来的进度(不动画)
         canvas.drawArc(f, 0, startProgress * 360 / 100, false, ringPaint);
         //新增的进度
-        //这里加减1度是为了在连接处看不到缝隙
-        if (startProgress < 1) {
+        //这里加减0.1度是为了在连接处看不到缝隙
+        if (startProgress < 0.1) {
             canvas.drawArc(f, startProgress * 360 / 100, (endProgress - startProgress) * 360 / 100, false, ringPaint);
         } else {
-            canvas.drawArc(f, startProgress * 360 / 100 - 1, (endProgress - startProgress) * 360 / 100 + 1, false, ringPaint);
+            canvas.drawArc(f, (float) (startProgress * 360 / 100 - 0.1), (float) ((endProgress - startProgress) * 360 / 100 + 0.1), false, ringPaint);
+        }
+        
+        //绘制线帽
+        if (mConfig.hasRingHead() && endProgress > 0) {
+            headPath = new Path();
+            headRadius = mConfig.getBgRingWidth() / 2;
+            float headX;
+            float headY;
+            if (endProgress > 0.1) {
+                //这里减0.1度是为了在连接处看不到缝隙
+                headX = LocalUtils.getPointX(bgRadius, (float) (endProgress * 360 / 100 - 0.1));
+                headY = LocalUtils.getPointY(bgRadius, (float) (endProgress * 360 / 100 - 0.1));
+            } else {
+                headX = LocalUtils.getPointX(bgRadius, endProgress * 360 / 100);
+                headY = LocalUtils.getPointY(bgRadius, endProgress * 360 / 100);
+            }
+            RectF hf = new RectF(headX - headRadius, headY - headRadius, headX + headRadius, headY + headRadius);
+            headPath.addArc(hf, endProgress * 360 / 100, 180);
+            headPath.close();
+            canvas.drawPath(headPath, headPaint);
         }
     }
     

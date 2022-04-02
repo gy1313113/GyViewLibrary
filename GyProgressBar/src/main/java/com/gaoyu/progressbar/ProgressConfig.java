@@ -55,6 +55,11 @@ public class ProgressConfig {
      */
     private TimeInterpolator mInterpolator;
     
+    /**
+     * 线帽
+     */
+    private boolean ringHead;
+    
     ProgressConfig(Context context) {
         this.mContext = context;
     }
@@ -134,6 +139,13 @@ public class ProgressConfig {
         this.mInterpolator = interpolator;
     }
     
+    /**
+     * 环上是否要帽子
+     */
+    public void setRingHead(boolean ringHead) {
+        this.ringHead = ringHead;
+    }
+    
     public float getBgDiameter() {
         return bgDiameter;
     }
@@ -160,6 +172,10 @@ public class ProgressConfig {
     
     public TimeInterpolator getInterpolator() {
         return mInterpolator;
+    }
+    
+    public boolean hasRingHead() {
+        return ringHead;
     }
     
     /**
