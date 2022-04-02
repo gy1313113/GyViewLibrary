@@ -125,7 +125,12 @@ public class RingProgressBar extends View implements IProgressBar {
         //原来的进度(不动画)
         canvas.drawArc(f, 0, startProgress * 360 / 100, false, ringPaint);
         //新增的进度
-        canvas.drawArc(f, startProgress * 360 / 100, endProgress * 360 / 100, false, ringPaint);
+        //这里加减1度是为了在连接处看不到缝隙
+        if (startProgress < 1) {
+            canvas.drawArc(f, startProgress * 360 / 100, (endProgress - startProgress) * 360 / 100, false, ringPaint);
+        } else {
+            canvas.drawArc(f, startProgress * 360 / 100 - 1, (endProgress - startProgress) * 360 / 100 + 1, false, ringPaint);
+        }
     }
     
     /**
@@ -140,7 +145,7 @@ public class RingProgressBar extends View implements IProgressBar {
         final float progressEnd = getEndProgress();
         a.addUpdateListener(animation -> {
             float value = (float) animation.getAnimatedValue();
-            setProgress(progressStart, progressStart + value * (progressEnd - progressStart));
+            setProgress(progressStart, progressStart + value * (progressEnd - progressStart), true);
             listener.onAnimatorRunning(value, progressStart + value * (progressEnd - progressStart));
         });
         a.start();
@@ -157,11 +162,14 @@ public class RingProgressBar extends View implements IProgressBar {
     
     /**
      * 设置进度(0~100)
+     * 要使用动画的话，这里建议仅设置参数不重绘
      */
-    public void setProgress(float startProgress, float endProgress) {
+    public void setProgress(float startProgress, float endProgress, boolean reDraw) {
         this.startProgress = startProgress;
         this.endProgress = endProgress;
-        invalidate();
+        if (reDraw) {
+            invalidate();
+        }
     }
     
     public float getStartProgress() {

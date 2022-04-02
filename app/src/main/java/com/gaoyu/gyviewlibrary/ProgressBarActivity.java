@@ -58,8 +58,8 @@ public class ProgressBarActivity extends AppCompatActivity {
         config.setBgDiameter(600f);
         config.setBgRingWidth(80f);
         config.setRingShader(new SweepGradient(0, 0, color, radius));
-        mTvEnd.setText(endProgress + "%");
-        mTvNow.setText("0.0" + "%");
+        mTvEnd.setText("目标进度:" + endProgress + "%");
+        mTvNow.setText("当前进度:" + "0.0" + "%");
     }
     
     @SuppressLint("SetTextI18n")
@@ -71,28 +71,28 @@ public class ProgressBarActivity extends AppCompatActivity {
                     randomProgress = 100;
                 }
                 endProgress = randomProgress;
-                mTvEnd.setText(endProgress + "%");
+                mTvEnd.setText("目标进度:" + endProgress + "%");
                 animator(endProgress);
             }
         });
         
         mBtnClear.setOnClickListener(v -> {
             mProgressBar.stopAnimator();
-            mProgressBar.setProgress(0, 0);
+            mProgressBar.setProgress(0, 0, true);
             startProgress = 0;
             endProgress = 0;
-            mTvEnd.setText("0.0" + "%");
-            mTvNow.setText("0.0" + "%");
+            mTvEnd.setText("目标进度:" + "0.0" + "%");
+            mTvNow.setText("当前进度:" + "0.0" + "%");
         });
     }
     
     @SuppressLint("SetTextI18n")
     private void animator(float end) {
-        mProgressBar.setProgress(startProgress, end);
+        mProgressBar.setProgress(startProgress, end, false);
         float cross = mProgressBar.getCrossProgress();
         mProgressBar.animator(5000 * (long) cross / 100, (value, progress) -> {
             startProgress = progress;
-            mTvNow.setText(progress + "%");
+            mTvNow.setText("当前进度:" + progress + "%");
         });
     }
 }
