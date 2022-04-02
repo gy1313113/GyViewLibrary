@@ -1,6 +1,8 @@
 package com.gaoyu.progressbar;
 
+import android.animation.TimeInterpolator;
 import android.content.Context;
+import android.graphics.Interpolator;
 import android.graphics.Shader;
 
 import androidx.annotation.ColorInt;
@@ -47,6 +49,11 @@ public class ProgressConfig {
      * 环的图层
      */
     private Shader ringShader;
+    
+    /**
+     * 动画的插值器
+     */
+    private TimeInterpolator mInterpolator;
     
     ProgressConfig(Context context) {
         this.mContext = context;
@@ -120,6 +127,13 @@ public class ProgressConfig {
         this.ringShader = ringShader;
     }
     
+    /**
+     * 环动画的时间插值器，作为不断更新的进度条时，不建议加，动画一会快一会慢
+     */
+    public void setInterpolator(TimeInterpolator interpolator) {
+        this.mInterpolator = interpolator;
+    }
+    
     public float getBgDiameter() {
         return bgDiameter;
     }
@@ -142,6 +156,10 @@ public class ProgressConfig {
     
     public Shader getRingShader() {
         return ringShader;
+    }
+    
+    public TimeInterpolator getInterpolator() {
+        return mInterpolator;
     }
     
     /**

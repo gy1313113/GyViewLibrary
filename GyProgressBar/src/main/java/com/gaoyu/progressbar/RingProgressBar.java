@@ -140,7 +140,7 @@ public class RingProgressBar extends View implements IProgressBar {
         stopAnimator();//结束之前的动画
         
         a = ValueAnimator.ofFloat(0, 1);
-        a.setDuration(duration);
+        a.setDuration(duration).setInterpolator(mConfig.getInterpolator());
         final float progressStart = getStartProgress();
         final float progressEnd = getEndProgress();
         a.addUpdateListener(animation -> {
