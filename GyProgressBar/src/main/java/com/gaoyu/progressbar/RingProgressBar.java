@@ -104,6 +104,40 @@ public class RingProgressBar extends View implements IProgressBar {
     }
     
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);//宽的测量大小，模式
+        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+        
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);//高的测量大小，模式
+        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+        
+        int w = widthSpecSize;   //定义测量宽，高(不包含测量模式)
+        int h = heightSpecSize;
+        
+        int minWidth = (int) mConfig.getBgDiameter();
+        
+        //处理wrap_content的几种特殊情况,数值为PX
+        if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
+            w = minWidth;
+            h = minWidth;
+        } else if (widthSpecMode == MeasureSpec.AT_MOST) {
+            w = h;
+        } else if (heightSpecMode == MeasureSpec.AT_MOST) {
+            h = w;
+        }
+        
+        if (minWidth > Math.min(w, h)) {
+            mConfig.setBgDiameter((float) Math.min(w, h));
+        }
+        
+        if (mConfig.getBgRingWidth() > mConfig.getBgDiameter() / 2) {
+            mConfig.setBgRingWidth(mConfig.getBgDiameter() / 2);
+        }
+        
+        setMeasuredDimension(w, h);
+    }
+    
+    @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         
         super.onLayout(changed, left, top, right, bottom);
@@ -127,7 +161,8 @@ public class RingProgressBar extends View implements IProgressBar {
             bgRingPaint.setColor(mConfig.getBgRingColor());
         }
         bgRingPaint.setStrokeWidth(mConfig.getBgRingWidth());
-        bgRadius = mConfig.getBgDiameter() / 2;
+        //通过Paint的设置画笔宽度来实现圆环时，要注意！圆环整体大小会变大，所以画圆时半径要根据环宽预先缩小
+        bgRadius = mConfig.getBgDiameter() / 2 - mConfig.getBgRingWidth() / 2;
         canvas.drawCircle(0, 0, bgRadius, bgRingPaint);
         //绘制圆环
         if (mConfig.getRingShader() != null) {
