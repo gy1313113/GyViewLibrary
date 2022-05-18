@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.Path.Direction;
+import android.graphics.Path.Op;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -98,7 +100,7 @@ public class RingProgressBar extends View implements IProgressBar {
         bgRingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bgRingPaint.setStyle(Style.STROKE);
         ringPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        ringPaint.setStyle(Style.STROKE);
+        ringPaint.setStyle(Style.FILL);
         headPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         headPaint.setStyle(Style.FILL);
     }
@@ -153,6 +155,7 @@ public class RingProgressBar extends View implements IProgressBar {
         canvas.translate(point.x, point.y);
         //画布绕原点顺时针旋转90度，让起始位置在正下方
         canvas.rotate(90f);
+        
         //绘制背景圆环
         if (mConfig.getBgRingShader() != null) {
             Shader shader = mConfig.getBgRingShader();
@@ -164,6 +167,7 @@ public class RingProgressBar extends View implements IProgressBar {
         //通过Paint的设置画笔宽度来实现圆环时，要注意！圆环整体大小会变大，所以画圆时半径要根据环宽预先缩小
         bgRadius = mConfig.getBgDiameter() / 2 - mConfig.getBgRingWidth() / 2;
         canvas.drawCircle(0, 0, bgRadius, bgRingPaint);
+        
         //绘制圆环
         if (mConfig.getRingShader() != null) {
             Shader shader = mConfig.getRingShader();
@@ -173,17 +177,20 @@ public class RingProgressBar extends View implements IProgressBar {
             ringPaint.setColor(mConfig.getRingColor());
             headPaint.setColor(mConfig.getRingColor());
         }
-        ringPaint.setStrokeWidth(mConfig.getBgRingWidth());
-        RectF f = new RectF(-bgRadius, -bgRadius, bgRadius, bgRadius);
-        //原来的进度(不动画)
-        canvas.drawArc(f, 0, startProgress * 360 / 100, false, ringPaint);
-        //新增的进度
-        //这里加减0.1度是为了在连接处看不到缝隙
-        if (startProgress < 0.1) {
-            canvas.drawArc(f, startProgress * 360 / 100, (endProgress - startProgress) * 360 / 100, false, ringPaint);
+        float outsideRadius = mConfig.getBgDiameter() / 2;
+        RectF f = new RectF(-outsideRadius, -outsideRadius, outsideRadius, outsideRadius);
+        Path outside = new Path();
+        Path inside = new Path();
+        if (endProgress != 100) {
+            //这个方法在sweepAngle为360度时失效
+            outside.arcTo(f, 0, endProgress * 360 / 100);
+            outside.lineTo(0, 0);
         } else {
-            canvas.drawArc(f, (float) (startProgress * 360 / 100 - 0.1), (float) ((endProgress - startProgress) * 360 / 100 + 0.1), false, ringPaint);
+            outside.addCircle(0, 0, outsideRadius, Direction.CW);
         }
+        inside.addCircle(0, 0, mConfig.getBgDiameter() / 2 - mConfig.getBgRingWidth(), Direction.CW);
+        outside.op(inside, outside, Op.REVERSE_DIFFERENCE);
+        canvas.drawPath(outside, ringPaint);
         
         //绘制线帽
         if (mConfig.hasRingHead() && endProgress > 0) {
@@ -192,7 +199,7 @@ public class RingProgressBar extends View implements IProgressBar {
             float headX;
             float headY;
             if (endProgress > 0.1) {
-                //这里减0.1度是为了在连接处看不到缝隙
+                //这里减0.1度是为了在连接处看不到缝隙，因为计算的进度有细微的偏差，有的地方被舍出了，所以要减小
                 headX = LocalUtils.getPointX(bgRadius, (float) (endProgress * 360 / 100 - 0.1));
                 headY = LocalUtils.getPointY(bgRadius, (float) (endProgress * 360 / 100 - 0.1));
             } else {
