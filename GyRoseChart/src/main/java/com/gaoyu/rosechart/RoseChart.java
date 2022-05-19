@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
+import android.graphics.Path.FillType;
 import android.graphics.Path.Op;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -234,6 +235,41 @@ public class RoseChart extends View {
     }
     
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);//宽的测量大小，模式
+        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+        
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);//高的测量大小，模式
+        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+        
+        int w = widthSpecSize;   //定义测量宽，高(不包含测量模式)
+        int h = heightSpecSize;
+        
+        //处理wrap_content的几种特殊情况,数值为PX
+        if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
+            if (getData() == null || getData().size() == 0) {
+                w = 0;
+                h = 0;
+            } else {
+                float max = 0;
+                for (RoseChartData entity : getData()) {
+                    if (entity.getRadius() > max) {
+                        max = entity.getRadius();
+                    }
+                }
+                w = (int) (2 * max + 1);
+                h = w;
+            }
+        } else if (widthSpecMode == MeasureSpec.AT_MOST) {
+            w = h;
+        } else if (heightSpecMode == MeasureSpec.AT_MOST) {
+            h = w;
+        }
+        
+        setMeasuredDimension(w, h);
+    }
+    
+    @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         
         super.onLayout(changed, left, top, right, bottom);
@@ -281,8 +317,6 @@ public class RoseChart extends View {
                 //确定包裹外圆的矩形，每个扇形的都不同
                 RectF outsideRectF = new RectF(-arcRadius, -arcRadius, arcRadius, arcRadius);
                 
-                //规划编辑区域并填充颜色
-                canvas.save();
                 //先绘制一个完整的扇形路径
                 Path path = new Path();
                 //arcTo()方法，有一侧的弧线连着起始点
@@ -296,10 +330,10 @@ public class RoseChart extends View {
                     path.offset(LocalUtils.offsetX(distance, oldAngle, crossAngle),
                         LocalUtils.offsetY(distance, oldAngle, crossAngle));
                 }
-                //剪辑路径
-                canvas.clipPath(path);
-                canvas.drawColor(Color.parseColor(data.get(i).getColor()));
-                canvas.restore();
+                path.setFillType(FillType.EVEN_ODD);
+                Paint arcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                arcPaint.setColor(Color.parseColor(data.get(i).getColor()));
+                canvas.drawPath(path, arcPaint);
                 
                 //将扇形绘制完成后所停留的角度存起来，之后方便区分点击区域
                 oldAngle = oldAngle + crossAngle + splitAngel;
