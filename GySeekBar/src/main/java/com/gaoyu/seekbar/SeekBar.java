@@ -14,7 +14,7 @@ import androidx.annotation.RequiresApi;
  *
  * @author Created by gaoyu on 2022/5/23 8:37
  */
-public class SeekBar extends View implements ISeekBar{
+public class SeekBar extends View implements ISeekBar {
     
     private SeekBarConfig mConfig;
     
@@ -55,7 +55,38 @@ public class SeekBar extends View implements ISeekBar{
     
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        drawBackground(canvas);
+        drawPassArea(canvas);
+        drawSlider(canvas);
+        drawMoveText(canvas);
+    }
+    
+    /**
+     * 绘制背景
+     */
+    private void drawBackground(Canvas canvas) {
+    
+    }
+    
+    /**
+     * 绘制经过的区域
+     */
+    private void drawPassArea(Canvas canvas) {
+    
+    }
+    
+    /**
+     * 绘制滑块
+     */
+    private void drawSlider(Canvas canvas) {
+    
+    }
+    
+    /**
+     * 绘制跟随滑动的文本
+     */
+    private void drawMoveText(Canvas canvas) {
+    
     }
     
     @Override
