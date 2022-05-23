@@ -1,13 +1,16 @@
 package com.gaoyu.seekbar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -27,12 +30,20 @@ public class SeekBar extends View implements ISeekBar {
     private Paint bgPaint;
     
     private Paint pgPaint;
-    
+    /**
+     * 绘制线时，头尾预留的宽度，防止滑块或线帽显示不全
+     */
     private float headWidth;
     /**
      * 滑块的中心位置
      */
     private float sliderCenter;
+    
+    private float[] sliderPosition;
+    /**
+     * 上一个点击事件在x轴上的位置
+     */
+    private float lastX;
     
     public SeekBar(Context context) {
         super(context);
@@ -108,7 +119,7 @@ public class SeekBar extends View implements ISeekBar {
         pgPaint.setColor(mConfig.getPgColor());
         pgPaint.setStrokeWidth(mConfig.getBgLineWidth());
         pgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
-        sliderCenter = (getWidth() - headWidth) * progress / 100f;
+        sliderCenter = (getWidth() - headWidth * 2) * progress / 100f + headWidth;
         canvas.drawLine(headWidth, 0, sliderCenter, 0, pgPaint);
     }
     
@@ -138,6 +149,9 @@ public class SeekBar extends View implements ISeekBar {
         }
         slider.setBounds((int) sliderCenter - w / 2, -h / 2, (int) sliderCenter + w / 2, h / 2);
         slider.draw(canvas);
+        
+        Rect f = slider.getBounds();
+        sliderPosition = new float[]{f.left, f.top, f.right, f.bottom};
     }
     
     /**
@@ -145,6 +159,44 @@ public class SeekBar extends View implements ISeekBar {
      */
     private void drawMoveText(Canvas canvas) {
     
+    }
+    
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent e) {
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                //防止上层ViewGroup拦截点击事件
+                getParent().requestDisallowInterceptTouchEvent(true);
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                getParent().requestDisallowInterceptTouchEvent(false);
+                break;
+        }
+        return super.dispatchTouchEvent(e);
+    }
+    
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        float x = e.getX();
+        boolean inArea = x >= sliderPosition[0] - 10 && x <= sliderPosition[2] + 10;
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+                if(inArea) {
+                    float dx = x - lastX;
+                    progress = progress + dx * (100f / getWidth());
+                    if (progress <= 0) {
+                        progress = 0;
+                    } else if (progress >= 100) {
+                        progress = 100;
+                    }
+                    setProgress(progress);
+                    break;
+                }
+        }
+        lastX = x;
+        return true;
     }
     
     @Override
@@ -160,5 +212,6 @@ public class SeekBar extends View implements ISeekBar {
     @Override
     public void setProgress(float progress) {
         this.progress = progress;
+        invalidate();
     }
 }

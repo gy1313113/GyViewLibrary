@@ -42,7 +42,7 @@ public class SeekBarActivity extends AppCompatActivity {
         mConfig.setPgColorRes(R.color.purple_200);
         mConfig.setSliderBgRes(R.mipmap.any_pic);
         mConfig.setSliderSize(100,100);
-        mSeekBar.setProgress(20f);
+        mSeekBar.setProgress(0f);
     }
     
     private void initEvent() {
