@@ -11,3 +11,4 @@ rootProject.name = "GyViewLibrary"
 include ':app'
 include ':GyRoseChart'
 include ':GyProgressBar'
+include ':GySeekBar'
