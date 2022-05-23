@@ -80,7 +80,31 @@ public class SeekBar extends View implements ISeekBar {
     
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+        
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+        
+        int w = widthSpecSize;
+        int h = heightSpecSize;
+        
+        int wm = widthSpecMode;
+        int hm = heightSpecMode;
+        
+        int minHeight = Math.min(mConfig.getBgLineWidth(), mConfig.getSliderHeight());
+        
+        //处理wrap_content的几种特殊情况,数值为PX
+        if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
+            wm = MeasureSpec.EXACTLY;
+            h = minHeight;
+        } else if (widthSpecMode == MeasureSpec.AT_MOST) {
+            wm = MeasureSpec.EXACTLY;
+        } else if (heightSpecMode == MeasureSpec.AT_MOST) {
+            h = minHeight;
+        }
+        
+        super.onMeasure(MeasureSpec.makeMeasureSpec(w, wm), MeasureSpec.makeMeasureSpec(h, hm));
     }
     
     @Override
@@ -189,7 +213,7 @@ public class SeekBar extends View implements ISeekBar {
                 inArea = x >= sliderPosition[0] - 10 && x <= sliderPosition[2] + 10;
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(inArea) {
+                if (inArea) {
                     float dx = x - lastX;
                     progress = progress + dx * (100f / getWidth());
                     if (progress <= 0) {
