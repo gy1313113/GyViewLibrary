@@ -44,6 +44,10 @@ public class SeekBar extends View implements ISeekBar {
      * 上一个点击事件在x轴上的位置
      */
     private float lastX;
+    /**
+     * 第一次触摸，是否在滑块区域内
+     */
+    private boolean inArea;
     
     public SeekBar(Context context) {
         super(context);
@@ -180,8 +184,10 @@ public class SeekBar extends View implements ISeekBar {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         float x = e.getX();
-        boolean inArea = x >= sliderPosition[0] - 10 && x <= sliderPosition[2] + 10;
         switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                inArea = x >= sliderPosition[0] - 10 && x <= sliderPosition[2] + 10;
+                break;
             case MotionEvent.ACTION_MOVE:
                 if(inArea) {
                     float dx = x - lastX;
@@ -192,8 +198,8 @@ public class SeekBar extends View implements ISeekBar {
                         progress = 100;
                     }
                     setProgress(progress);
-                    break;
                 }
+                break;
         }
         lastX = x;
         return true;
