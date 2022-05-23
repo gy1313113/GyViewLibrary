@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
-import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.view.View;
@@ -22,7 +22,17 @@ public class SeekBar extends View implements ISeekBar {
     
     private SeekBarConfig mConfig;
     
+    private float progress;
+    
     private Paint bgPaint;
+    
+    private Paint pgPaint;
+    
+    private float headWidth;
+    /**
+     * 滑块的中心位置
+     */
+    private float sliderCenter;
     
     public SeekBar(Context context) {
         super(context);
@@ -49,6 +59,8 @@ public class SeekBar extends View implements ISeekBar {
         mConfig = new SeekBarConfig(getContext());
         bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bgPaint.setStyle(Style.STROKE);
+        pgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        pgPaint.setStyle(Style.STROKE);
     }
     
     @Override
@@ -85,22 +97,47 @@ public class SeekBar extends View implements ISeekBar {
         bgPaint.setColor(mConfig.getBgColor());
         bgPaint.setStrokeWidth(mConfig.getBgLineWidth());
         bgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
-        float capWidth = mConfig.getBgLineWidth() / 2;
-        canvas.drawLine(capWidth, 0, getWidth() - capWidth, 0, bgPaint);
+        headWidth = Math.max(mConfig.getBgLineWidth() / 2, mConfig.getSliderWidth() / 2);
+        canvas.drawLine(headWidth, 0, getWidth() - headWidth, 0, bgPaint);
     }
     
     /**
      * 绘制经过的区域
      */
     private void drawPassArea(Canvas canvas) {
-    
+        pgPaint.setColor(mConfig.getPgColor());
+        pgPaint.setStrokeWidth(mConfig.getBgLineWidth());
+        pgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
+        sliderCenter = (getWidth() - headWidth) * progress / 100f;
+        canvas.drawLine(headWidth, 0, sliderCenter, 0, pgPaint);
     }
     
     /**
      * 绘制滑块
      */
     private void drawSlider(Canvas canvas) {
-    
+        Drawable slider = mConfig.getSliderBg();
+        int w;
+        int h;
+        //设置的大小优先级高于自身的大小,如果超出了控件的大小,则使用控件的大小
+        if (mConfig.getSliderWidth() != 0) {
+            w = mConfig.getSliderWidth();
+        } else {
+            w = slider.getIntrinsicWidth();
+        }
+        if (mConfig.getSliderHeight() != 0) {
+            h = mConfig.getSliderHeight();
+        } else {
+            h = slider.getIntrinsicHeight();
+        }
+        if (getWidth() < w) {
+            w = getWidth();
+        }
+        if (getHeight() < h) {
+            h = getHeight();
+        }
+        slider.setBounds((int) sliderCenter - w / 2, -h / 2, (int) sliderCenter + w / 2, h / 2);
+        slider.draw(canvas);
     }
     
     /**
@@ -113,5 +150,15 @@ public class SeekBar extends View implements ISeekBar {
     @Override
     public SeekBarConfig getSetting() {
         return mConfig;
+    }
+    
+    @Override
+    public float getProgress() {
+        return progress;
+    }
+    
+    @Override
+    public void setProgress(float progress) {
+        this.progress = progress;
     }
 }

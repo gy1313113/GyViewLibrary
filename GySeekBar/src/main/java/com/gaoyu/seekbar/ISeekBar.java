@@ -9,4 +9,14 @@ interface ISeekBar {
      * 获取设置
      */
     SeekBarConfig getSetting();
+    
+    /**
+     * 获取当前进度(0~100)
+     */
+    float getProgress();
+    
+    /**
+     * 设置当前进度(0~100)
+     */
+    void setProgress(float progress);
 }
