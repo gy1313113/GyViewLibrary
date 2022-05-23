@@ -2,6 +2,10 @@ package com.gaoyu.seekbar;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Cap;
+import android.graphics.Paint.Style;
+import android.graphics.PointF;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.view.View;
@@ -17,6 +21,8 @@ import androidx.annotation.RequiresApi;
 public class SeekBar extends View implements ISeekBar {
     
     private SeekBarConfig mConfig;
+    
+    private Paint bgPaint;
     
     public SeekBar(Context context) {
         super(context);
@@ -41,6 +47,8 @@ public class SeekBar extends View implements ISeekBar {
     
     private void init() {
         mConfig = new SeekBarConfig(getContext());
+        bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        bgPaint.setStyle(Style.STROKE);
     }
     
     @Override
@@ -55,6 +63,7 @@ public class SeekBar extends View implements ISeekBar {
     
     @Override
     protected void onDraw(Canvas canvas) {
+        changeOriginPoint(canvas);
         drawBackground(canvas);
         drawPassArea(canvas);
         drawSlider(canvas);
@@ -62,10 +71,22 @@ public class SeekBar extends View implements ISeekBar {
     }
     
     /**
+     * 改变坐标原点
+     */
+    private void changeOriginPoint(Canvas canvas) {
+        //画布原点移到新的坐标原点
+        canvas.translate(0, getHeight() / 2f);
+    }
+    
+    /**
      * 绘制背景
      */
     private void drawBackground(Canvas canvas) {
-    
+        bgPaint.setColor(mConfig.getBgColor());
+        bgPaint.setStrokeWidth(mConfig.getBgLineWidth());
+        bgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
+        float capWidth = mConfig.getBgLineWidth() / 2;
+        canvas.drawLine(capWidth, 0, getWidth() - capWidth, 0, bgPaint);
     }
     
     /**

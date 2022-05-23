@@ -7,22 +7,16 @@
     android:orientation="vertical"
     tools:ignore="PxUsage">
 
-    <Button
-        android:id="@+id/btn_rose_chart"
+    <com.gaoyu.seekbar.SeekBar
+        android:id="@+id/seek_bar"
         android:layout_width="match_parent"
-        android:layout_height="115px"
-        android:text="玫瑰图、饼图、圆环"/>
+        android:layout_height="300px"
+        android:layout_marginStart="20px"
+        android:layout_marginEnd="20px"/>
 
-    <Button
-        android:id="@+id/btn_progress_bar"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="115px"
-        android:text="进度条"/>
-
-    <Button
-        android:id="@+id/btn_seek_bar"
-        android:layout_width="match_parent"
-        android:layout_height="115px"
-        android:text="拖动条"/>
+        android:layout_height="3px"
+        android:background="@color/bg_color_gray_white_tint" />
 
 </LinearLayout>

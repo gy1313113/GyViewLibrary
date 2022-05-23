@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     
     private Button mBtnRoseChart;
     private Button mBtnProgressBar;
+    private Button mBtnSeekBar;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         mBtnRoseChart = findViewById(R.id.btn_rose_chart);
         mBtnProgressBar = findViewById(R.id.btn_progress_bar);
+        mBtnSeekBar = findViewById(R.id.btn_seek_bar);
     }
     
     private void initEvent() {
@@ -38,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         
         mBtnProgressBar.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProgressBarActivity.class);
+            startActivity(intent);
+        });
+    
+        mBtnSeekBar.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SeekBarActivity.class);
             startActivity(intent);
         });
     }
