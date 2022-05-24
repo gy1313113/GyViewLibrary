@@ -1,6 +1,7 @@
 package com.gaoyu.seekbar;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.ColorInt;
@@ -46,6 +47,22 @@ public class SeekBarConfig {
      * 滑块高度(像素 PX)
      */
     private int sliderHeight;
+    /**
+     * 文本颜色
+     */
+    private int textColor;
+    /**
+     * 文本大小
+     */
+    private int textSize;
+    /**
+     * 字体
+     */
+    private Typeface typeface;
+    /**
+     * 文本的位置偏移(像素 PX)
+     */
+    private int textOffSet;
     
     public SeekBarConfig(Context context) {
         this.mContext = context;
@@ -178,5 +195,62 @@ public class SeekBarConfig {
     public void setSliderSize(@Px int sliderWidth, @Px int sliderHeight) {
         this.sliderWidth = sliderWidth;
         this.sliderHeight = sliderHeight;
+    }
+    
+    public int getTextColor() {
+        return textColor;
+    }
+    
+    /**
+     * 设置文本颜色
+     *
+     * @param textColor 色值
+     */
+    public void setTextColor(@ColorInt int textColor) {
+        this.textColor = textColor;
+    }
+    
+    /**
+     * 设置文本颜色
+     * @param textColorRes 颜色资源id
+     */
+    public void setTextColorRes(@ColorRes int textColorRes) {
+        this.textColor = ContextCompat.getColor(mContext, textColorRes);
+    }
+    
+    public int getTextSize() {
+        return textSize;
+    }
+    
+    /**
+     * 设置字体大小
+     * @param textSize 字体大小
+     */
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+    
+    public Typeface getTypeface() {
+        return typeface;
+    }
+    
+    /**
+     * 设置字体
+     * @param typeface 字体
+     */
+    public void setTypeface(Typeface typeface) {
+        this.typeface = typeface;
+    }
+    
+    public int getTextOffSet() {
+        return textOffSet;
+    }
+    
+    /**
+     * 设置文本偏移
+     * @param textOffSet 文本偏移量(像素 PX)
+     */
+    public void setTextOffSet(@Px int textOffSet) {
+        this.textOffSet = textOffSet;
     }
 }

@@ -35,14 +35,7 @@ public class SeekBarActivity extends AppCompatActivity {
     }
     
     private void initData() {
-        SeekBarConfig mConfig = mSeekBar.getSetting();
-        mConfig.setBgColorRes(R.color.bg_color_gray_white_tint);
-        mConfig.setBgLineWidth(20);
-        mConfig.setOpenBgCap(true);
-        mConfig.setPgColorRes(R.color.purple_200);
-        mConfig.setSliderBgRes(R.mipmap.any_pic);
-        mConfig.setSliderSize(100,100);
-        mSeekBar.setProgress(0f);
+        //SeekBarConfig mConfig = mSeekBar.getSetting();
     }
     
     private void initEvent() {

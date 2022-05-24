@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SeekBar">
+        <!--背景条颜色-->
+        <attr name="bg_color" format="color|reference" />
+        <!--背景条粗细-->
+        <attr name="bg_line_width" format="dimension|reference" />
+        <!--背景条线帽-->
+        <attr name="open_bg_cap" format="boolean" />
+        <!--进度条颜色-->
+        <attr name="pg_color" format="color|reference" />
+        <!--滑块背景-->
+        <attr name="slider_bg" format="reference" />
+        <!--滑块宽度-->
+        <attr name="slider_width" format="dimension|reference" />
+        <!--滑块高度-->
+        <attr name="slider_height" format="dimension|reference" />
+        <!--文本颜色-->
+        <attr name="text_color" format="color|reference" />
+        <!--文本大小-->
+        <attr name="text_size" format="dimension|reference" />
+        <!--文本偏移-->
+        <attr name="text_offset" format="dimension|reference" />
+        <!--当前进度-->
+        <attr name="progress" format="float" />
+        <!--文本-->
+        <attr name="text" format="string" />
+    </declare-styleable>
+</resources>

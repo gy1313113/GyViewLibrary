@@ -2,6 +2,7 @@ package com.gaoyu.seekbar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
@@ -30,6 +31,8 @@ public class SeekBar extends View implements ISeekBar {
     private Paint bgPaint;
     
     private Paint pgPaint;
+    
+    private Paint textPaint;
     /**
      * 绘制线时，头尾预留的宽度，防止滑块或线帽显示不全
      */
@@ -49,6 +52,8 @@ public class SeekBar extends View implements ISeekBar {
      */
     private boolean inArea;
     
+    private String mText;
+    
     public SeekBar(Context context) {
         super(context);
         init();
@@ -57,17 +62,20 @@ public class SeekBar extends View implements ISeekBar {
     public SeekBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
+        initAttrs(attrs);
     }
     
     public SeekBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+        initAttrs(attrs);
     }
     
     @RequiresApi(api = VERSION_CODES.LOLLIPOP)
     public SeekBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
+        initAttrs(attrs);
     }
     
     private void init() {
@@ -76,6 +84,26 @@ public class SeekBar extends View implements ISeekBar {
         bgPaint.setStyle(Style.STROKE);
         pgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         pgPaint.setStyle(Style.STROKE);
+        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    }
+    
+    private void initAttrs(AttributeSet attrs) {
+        if (attrs != null) {
+            TypedArray t = getContext().obtainStyledAttributes(attrs, R.styleable.SeekBar);
+            mConfig.setBgColor(t.getColor(R.styleable.SeekBar_bg_color, 0xffbfbfbf));
+            mConfig.setBgLineWidth(t.getDimensionPixelSize(R.styleable.SeekBar_bg_line_width, 20));
+            mConfig.setOpenBgCap(t.getBoolean(R.styleable.SeekBar_open_bg_cap, true));
+            mConfig.setPgColor(t.getColor(R.styleable.SeekBar_pg_color, 0xffbb86fc));
+            mConfig.setSliderBg(t.getDrawable(R.styleable.SeekBar_slider_bg));
+            mConfig.setSliderWidth(t.getDimensionPixelSize(R.styleable.SeekBar_slider_width, 100));
+            mConfig.setSliderHeight(t.getDimensionPixelSize(R.styleable.SeekBar_slider_height, 100));
+            mConfig.setTextColor(t.getColor(R.styleable.SeekBar_text_color, 0xff333333));
+            mConfig.setTextSize(t.getDimensionPixelSize(R.styleable.SeekBar_text_size, 20));
+            mConfig.setTextOffSet(t.getDimensionPixelSize(R.styleable.SeekBar_text_offset, 0));
+            progress = t.getFloat(R.styleable.SeekBar_progress, 0);
+            mText = t.getString(R.styleable.SeekBar_text);
+            t.recycle();
+        }
     }
     
     @Override
@@ -92,7 +120,16 @@ public class SeekBar extends View implements ISeekBar {
         int wm = widthSpecMode;
         int hm = heightSpecMode;
         
-        int minHeight = Math.max(mConfig.getBgLineWidth(), mConfig.getSliderHeight());
+        int minHeight;
+        if (mConfig.getSliderBg() != null && mConfig.getSliderHeight() == 0) {
+            Drawable slider = mConfig.getSliderBg();
+            minHeight = slider.getIntrinsicHeight();
+        } else {
+            minHeight = mConfig.getSliderHeight();
+        }
+        minHeight = Math.max(minHeight, mConfig.getBgLineWidth());
+        minHeight = Math.max(minHeight, mConfig.getTextSize());
+        minHeight = Math.max(minHeight, (minHeight / 2) + Math.abs(mConfig.getTextOffSet()) + (mConfig.getTextSize() / 2));
         
         //处理wrap_content的几种特殊情况,数值为PX
         if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
@@ -155,38 +192,48 @@ public class SeekBar extends View implements ISeekBar {
      * 绘制滑块
      */
     private void drawSlider(Canvas canvas) {
-        Drawable slider = mConfig.getSliderBg();
-        int w;
-        int h;
-        //设置的大小优先级高于自身的大小,如果超出了控件的大小,则使用控件的大小
-        if (mConfig.getSliderWidth() != 0) {
-            w = mConfig.getSliderWidth();
-        } else {
-            w = slider.getIntrinsicWidth();
+        //没有设置滑块背景不会绘制滑块
+        if (mConfig.getSliderBg() != null) {
+            Drawable slider = mConfig.getSliderBg();
+            int w;
+            int h;
+            //设置的大小优先级高于自身的大小,如果超出了控件的大小,则使用控件的大小
+            if (mConfig.getSliderWidth() != 0) {
+                w = mConfig.getSliderWidth();
+            } else {
+                w = slider.getIntrinsicWidth();
+            }
+            if (mConfig.getSliderHeight() != 0) {
+                h = mConfig.getSliderHeight();
+            } else {
+                h = slider.getIntrinsicHeight();
+            }
+            if (getWidth() < w) {
+                w = getWidth();
+            }
+            if (getHeight() < h) {
+                h = getHeight();
+            }
+            slider.setBounds((int) sliderCenter - w / 2, -h / 2, (int) sliderCenter + w / 2, h / 2);
+            slider.draw(canvas);
+            
+            Rect f = slider.getBounds();
+            sliderPosition = new float[]{f.left, f.top, f.right, f.bottom};
         }
-        if (mConfig.getSliderHeight() != 0) {
-            h = mConfig.getSliderHeight();
-        } else {
-            h = slider.getIntrinsicHeight();
-        }
-        if (getWidth() < w) {
-            w = getWidth();
-        }
-        if (getHeight() < h) {
-            h = getHeight();
-        }
-        slider.setBounds((int) sliderCenter - w / 2, -h / 2, (int) sliderCenter + w / 2, h / 2);
-        slider.draw(canvas);
-        
-        Rect f = slider.getBounds();
-        sliderPosition = new float[]{f.left, f.top, f.right, f.bottom};
     }
     
     /**
      * 绘制跟随滑动的文本
      */
     private void drawMoveText(Canvas canvas) {
-    
+        if (mText != null) {
+            textPaint.setColor(mConfig.getTextColor());
+            textPaint.setTextSize(mConfig.getTextSize());
+            if (mConfig.getTypeface() != null) {
+                textPaint.setTypeface(mConfig.getTypeface());
+            }
+            canvas.drawText(mText, sliderCenter, mConfig.getTextOffSet(), textPaint);
+        }
     }
     
     @Override
@@ -210,7 +257,7 @@ public class SeekBar extends View implements ISeekBar {
         float x = e.getX();
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                inArea = x >= sliderPosition[0] - 10 && x <= sliderPosition[2] + 10;
+                inArea = mConfig.getSliderBg() != null && x >= sliderPosition[0] - 10 && x <= sliderPosition[2] + 10;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (inArea) {
@@ -243,5 +290,24 @@ public class SeekBar extends View implements ISeekBar {
     public void setProgress(float progress) {
         this.progress = progress;
         invalidate();
+    }
+    
+    @Override
+    public String getText() {
+        return mText;
+    }
+    
+    @Override
+    public void setText(String text) {
+        this.mText = text;
+        invalidate();
+    }
+    
+    @Override
+    public void setText(String text, boolean reDraw) {
+        this.mText = text;
+        if (reDraw) {
+            invalidate();
+        }
     }
 }
