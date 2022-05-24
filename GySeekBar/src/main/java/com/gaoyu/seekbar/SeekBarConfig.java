@@ -63,6 +63,10 @@ public class SeekBarConfig {
      * 文本的位置偏移(像素 PX)
      */
     private int textOffSet;
+    /**
+     * 设置最大的文本数量
+     */
+    private int maxText;
     
     public SeekBarConfig(Context context) {
         this.mContext = context;
@@ -252,5 +256,18 @@ public class SeekBarConfig {
      */
     public void setTextOffSet(@Px int textOffSet) {
         this.textOffSet = textOffSet;
+    }
+    
+    public int getMaxText() {
+        return maxText;
+    }
+    
+    /**
+     * 设置最大的文本数量(如果文本都较短，可以适当减小，默认为5，
+     * 如果设置小于等于0，则不再限制文本长度，此时如果文本不断变化长度，则整个拖动条都会不断自适应变化长度)
+     * @param maxText 文本数量
+     */
+    public void setMaxText(int maxText) {
+        this.maxText = maxText;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
@@ -54,6 +55,8 @@ public class SeekBar extends View implements ISeekBar {
     
     private String mText;
     
+    private OnProgressChangeListener mProgressChangeListener;
+    
     public SeekBar(Context context) {
         super(context);
         init();
@@ -85,6 +88,8 @@ public class SeekBar extends View implements ISeekBar {
         pgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         pgPaint.setStyle(Style.STROKE);
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        //设置文本的绘制水平居中
+        textPaint.setTextAlign(Align.CENTER);
     }
     
     private void initAttrs(AttributeSet attrs) {
@@ -100,6 +105,7 @@ public class SeekBar extends View implements ISeekBar {
             mConfig.setTextColor(t.getColor(R.styleable.SeekBar_text_color, 0xff333333));
             mConfig.setTextSize(t.getDimensionPixelSize(R.styleable.SeekBar_text_size, 20));
             mConfig.setTextOffSet(t.getDimensionPixelSize(R.styleable.SeekBar_text_offset, 0));
+            mConfig.setMaxText(t.getInt(R.styleable.SeekBar_max_text, 5));
             progress = t.getFloat(R.styleable.SeekBar_progress, 0);
             mText = t.getString(R.styleable.SeekBar_text);
             t.recycle();
@@ -129,7 +135,7 @@ public class SeekBar extends View implements ISeekBar {
         }
         minHeight = Math.max(minHeight, mConfig.getBgLineWidth());
         minHeight = Math.max(minHeight, mConfig.getTextSize());
-        minHeight = Math.max(minHeight, (minHeight / 2) + Math.abs(mConfig.getTextOffSet()) + (mConfig.getTextSize() / 2));
+        minHeight = Math.max(minHeight, mConfig.getTextSize() + Math.abs(mConfig.getTextOffSet()) * 2);
         
         //处理wrap_content的几种特殊情况,数值为PX
         if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
@@ -173,7 +179,15 @@ public class SeekBar extends View implements ISeekBar {
         bgPaint.setColor(mConfig.getBgColor());
         bgPaint.setStrokeWidth(mConfig.getBgLineWidth());
         bgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
-        headWidth = Math.max(mConfig.getBgLineWidth() / 2, mConfig.getSliderWidth() / 2);
+        float textWidth;
+        if (mConfig.getMaxText() > 0) {
+            textWidth = mConfig.getMaxText() * mConfig.getTextSize();
+        } else {
+            textWidth = mText.length() * mConfig.getTextSize();
+        }
+        headWidth = mConfig.getBgLineWidth() / 2f;
+        headWidth = Math.max(headWidth, mConfig.getSliderWidth() / 2f);
+        headWidth = Math.max(headWidth, textWidth / 2f);
         canvas.drawLine(headWidth, 0, getWidth() - headWidth, 0, bgPaint);
     }
     
@@ -185,7 +199,9 @@ public class SeekBar extends View implements ISeekBar {
         pgPaint.setStrokeWidth(mConfig.getBgLineWidth());
         pgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
         sliderCenter = (getWidth() - headWidth * 2) * progress / 100f + headWidth;
-        canvas.drawLine(headWidth, 0, sliderCenter, 0, pgPaint);
+        if (progress > 0) {
+            canvas.drawLine(headWidth, 0, sliderCenter, 0, pgPaint);
+        }
     }
     
     /**
@@ -232,7 +248,15 @@ public class SeekBar extends View implements ISeekBar {
             if (mConfig.getTypeface() != null) {
                 textPaint.setTypeface(mConfig.getTypeface());
             }
-            canvas.drawText(mText, sliderCenter, mConfig.getTextOffSet(), textPaint);
+            //获取字体的基本属性
+            Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+            canvas.drawText(
+                mText,
+                0,
+                Math.min(Math.max(mConfig.getMaxText(), 1), mText.length()),
+                sliderCenter,
+                mConfig.getTextOffSet() - fontMetrics.ascent / 2f,
+                textPaint);
         }
     }
     
@@ -289,6 +313,9 @@ public class SeekBar extends View implements ISeekBar {
     @Override
     public void setProgress(float progress) {
         this.progress = progress;
+        if (mProgressChangeListener != null) {
+            mProgressChangeListener.onChange(progress);
+        }
         invalidate();
     }
     
@@ -309,5 +336,9 @@ public class SeekBar extends View implements ISeekBar {
         if (reDraw) {
             invalidate();
         }
+    }
+    
+    public void setOnProgressChangeListener(OnProgressChangeListener listener) {
+        this.mProgressChangeListener = listener;
     }
 }

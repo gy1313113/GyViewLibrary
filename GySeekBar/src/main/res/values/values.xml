@@ -21,6 +21,8 @@
         <attr name="text_size" format="dimension|reference" />
         <!--文本偏移-->
         <attr name="text_offset" format="dimension|reference" />
+        <!--最大文本数量-->
+        <attr name="max_text" format="integer" />
         <!--当前进度-->
         <attr name="progress" format="float" />
         <!--文本-->

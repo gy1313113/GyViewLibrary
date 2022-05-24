@@ -8,17 +8,57 @@
     tools:ignore="PxUsage">
 
     <com.gaoyu.seekbar.SeekBar
-        android:id="@+id/seek_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:text="好极了"
         app:progress="50"
-        app:text_offset="-50px"
         app:slider_bg="@mipmap/any_pic" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="3px"
         android:background="@color/bg_color_gray_white_tint" />
+
+    <com.gaoyu.seekbar.SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_marginTop="100px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:slider_bg="@drawable/simple_slider"
+        app:max_text="6"
+        app:slider_height="50px"
+        app:text_offset="-2px"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_remove_slider"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="移除滑块"
+            android:textSize="37px" />
+
+        <View
+            android:layout_width="20px"
+            android:layout_height="match_parent"/>
+
+        <Button
+            android:id="@+id/btn_data"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:textSize="37px" />
+    </LinearLayout>
 
 </LinearLayout>
