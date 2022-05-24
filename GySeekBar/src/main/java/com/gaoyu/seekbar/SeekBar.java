@@ -92,11 +92,11 @@ public class SeekBar extends View implements ISeekBar {
         int wm = widthSpecMode;
         int hm = heightSpecMode;
         
-        int minHeight = Math.min(mConfig.getBgLineWidth(), mConfig.getSliderHeight());
+        int minHeight = Math.max(mConfig.getBgLineWidth(), mConfig.getSliderHeight());
         
         //处理wrap_content的几种特殊情况,数值为PX
         if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
-            wm = MeasureSpec.EXACTLY;
+            wm = MeasureSpec.EXACTLY;//宽度自适应时，当match_parent处理
             h = minHeight;
         } else if (widthSpecMode == MeasureSpec.AT_MOST) {
             wm = MeasureSpec.EXACTLY;
