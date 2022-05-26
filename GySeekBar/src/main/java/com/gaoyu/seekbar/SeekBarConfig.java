@@ -24,6 +24,10 @@ public class SeekBarConfig {
      */
     private int bgColor;
     /**
+     * Drawable背景，有它则设置的背景色、线帽失效
+     */
+    private Drawable bgDrawable;
+    /**
      * 背景条的宽度(像素 PX)
      */
     private int bgLineWidth;
@@ -92,6 +96,28 @@ public class SeekBarConfig {
      */
     public void setBgColorRes(@ColorRes int bgColorRes) {
         this.bgColor = ContextCompat.getColor(mContext, bgColorRes);
+    }
+    
+    public Drawable getBgDrawable() {
+        return bgDrawable;
+    }
+    
+    /**
+     * Drawable背景，有它则设置的背景色、线帽失效
+     *
+     * @param bgDrawable 背景的Drawable对象
+     */
+    public void setBgDrawable(Drawable bgDrawable) {
+        this.bgDrawable = bgDrawable;
+    }
+    
+    /**
+     * Drawable背景，有它则设置的背景色、线帽失效
+     *
+     * @param bgDrawableRes 背景的Drawable资源id
+     */
+    public void setBgDrawableRes(@DrawableRes int bgDrawableRes) {
+        this.bgDrawable = ContextCompat.getDrawable(mContext, bgDrawableRes);
     }
     
     public int getBgLineWidth() {
@@ -216,6 +242,7 @@ public class SeekBarConfig {
     
     /**
      * 设置文本颜色
+     *
      * @param textColorRes 颜色资源id
      */
     public void setTextColorRes(@ColorRes int textColorRes) {
@@ -228,6 +255,7 @@ public class SeekBarConfig {
     
     /**
      * 设置字体大小
+     *
      * @param textSize 字体大小
      */
     public void setTextSize(int textSize) {
@@ -240,6 +268,7 @@ public class SeekBarConfig {
     
     /**
      * 设置字体
+     *
      * @param typeface 字体
      */
     public void setTypeface(Typeface typeface) {
@@ -252,6 +281,7 @@ public class SeekBarConfig {
     
     /**
      * 设置文本偏移
+     *
      * @param textOffSet 文本偏移量(像素 PX)
      */
     public void setTextOffSet(@Px int textOffSet) {
@@ -265,6 +295,7 @@ public class SeekBarConfig {
     /**
      * 设置最大的文本数量(如果文本都较短，可以适当减小，默认为5，
      * 如果设置小于等于0，则不再限制文本长度，此时如果文本不断变化长度，则整个拖动条都会不断自适应变化长度)
+     *
      * @param maxText 文本数量
      */
     public void setMaxText(int maxText) {

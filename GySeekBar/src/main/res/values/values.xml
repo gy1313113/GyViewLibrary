@@ -3,6 +3,8 @@
     <declare-styleable name="SeekBar">
         <!--背景条颜色-->
         <attr name="bg_color" format="color|reference" />
+        <!--背景条自定义背景-->
+        <attr name="bg_drawable" format="reference" />
         <!--背景条粗细-->
         <attr name="bg_line_width" format="dimension|reference" />
         <!--背景条线帽-->

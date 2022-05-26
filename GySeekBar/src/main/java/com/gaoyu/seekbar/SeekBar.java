@@ -96,6 +96,7 @@ public class SeekBar extends View implements ISeekBar {
         if (attrs != null) {
             TypedArray t = getContext().obtainStyledAttributes(attrs, R.styleable.SeekBar);
             mConfig.setBgColor(t.getColor(R.styleable.SeekBar_bg_color, 0xffbfbfbf));
+            mConfig.setBgDrawable(t.getDrawable(R.styleable.SeekBar_bg_drawable));
             mConfig.setBgLineWidth(t.getDimensionPixelSize(R.styleable.SeekBar_bg_line_width, 20));
             mConfig.setOpenBgCap(t.getBoolean(R.styleable.SeekBar_open_bg_cap, true));
             mConfig.setPgColor(t.getColor(R.styleable.SeekBar_pg_color, 0xffbb86fc));
@@ -176,19 +177,32 @@ public class SeekBar extends View implements ISeekBar {
      * 绘制背景
      */
     private void drawBackground(Canvas canvas) {
-        bgPaint.setColor(mConfig.getBgColor());
-        bgPaint.setStrokeWidth(mConfig.getBgLineWidth());
-        bgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
         float textWidth;
         if (mConfig.getMaxText() > 0) {
             textWidth = mConfig.getMaxText() * mConfig.getTextSize();
         } else {
             textWidth = mText.length() * mConfig.getTextSize();
         }
-        headWidth = mConfig.getBgLineWidth() / 2f;
-        headWidth = Math.max(headWidth, mConfig.getSliderWidth() / 2f);
+        headWidth = 0;
         headWidth = Math.max(headWidth, textWidth / 2f);
-        canvas.drawLine(headWidth, 0, getWidth() - headWidth, 0, bgPaint);
+        headWidth = Math.max(headWidth, mConfig.getSliderWidth() / 2f);
+        if (mConfig.isOpenBgCap() && mConfig.getBgDrawable() == null) {
+            headWidth = Math.max(headWidth, mConfig.getBgLineWidth() / 2f);
+        }
+        if (mConfig.getBgDrawable() != null) {
+            Drawable bgDrawable = mConfig.getBgDrawable();
+            bgDrawable.setBounds(
+                (int) headWidth,
+                -mConfig.getBgLineWidth() / 2,
+                (int) (getWidth() - headWidth),
+                mConfig.getBgLineWidth() / 2);
+            bgDrawable.draw(canvas);
+        } else {
+            bgPaint.setColor(mConfig.getBgColor());
+            bgPaint.setStrokeWidth(mConfig.getBgLineWidth());
+            bgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
+            canvas.drawLine(headWidth, 0, getWidth() - headWidth, 0, bgPaint);
+        }
     }
     
     /**
