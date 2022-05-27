@@ -12,7 +12,7 @@
 
 使用示例`ProgressBarActivity`
 
-#### 拖动条`SmartSeekBar`
+#### 智能拖动条`SmartSeekBar`
 
 详情见`GySeekBar`module
 
