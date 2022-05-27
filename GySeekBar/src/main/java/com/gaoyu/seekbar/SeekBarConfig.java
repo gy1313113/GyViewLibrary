@@ -24,7 +24,7 @@ public class SeekBarConfig {
      */
     private int bgColor;
     /**
-     * Drawable背景，有它则设置的背景色、线帽失效
+     * Drawable背景，有它则设置的背景色失效
      */
     private Drawable bgDrawable;
     /**
@@ -39,6 +39,10 @@ public class SeekBarConfig {
      * 进度条颜色
      */
     private int pgColor;
+    /**
+     * Drawable进度条，有它则设置的进度条颜色失效，背景和进度条都是Drawable时，线帽属性也失效
+     */
+    private Drawable pgDrawable;
     /**
      * 滑块背景
      */
@@ -103,7 +107,7 @@ public class SeekBarConfig {
     }
     
     /**
-     * Drawable背景，有它则设置的背景色、线帽失效
+     * Drawable背景，有它则设置的背景色失效
      *
      * @param bgDrawable 背景的Drawable对象
      */
@@ -112,7 +116,7 @@ public class SeekBarConfig {
     }
     
     /**
-     * Drawable背景，有它则设置的背景色、线帽失效
+     * Drawable背景，有它则设置的背景色失效
      *
      * @param bgDrawableRes 背景的Drawable资源id
      */
@@ -166,6 +170,28 @@ public class SeekBarConfig {
      */
     public void setPgColorRes(@ColorRes int pgColorRes) {
         this.pgColor = ContextCompat.getColor(mContext, pgColorRes);
+    }
+    
+    public Drawable getPgDrawable() {
+        return pgDrawable;
+    }
+    
+    /**
+     * Drawable进度条，有它则设置的进度条颜色失效，背景和进度条都是Drawable时，线帽属性也失效
+     *
+     * @param pgDrawable 进度条的Drawable对象
+     */
+    public void setPgDrawable(Drawable pgDrawable) {
+        this.pgDrawable = pgDrawable;
+    }
+    
+    /**
+     * Drawable进度条，有它则设置的进度条颜色失效，背景和进度条都是Drawable时，线帽属性也失效
+     *
+     * @param pgDrawableRes 进度条的Drawable资源id
+     */
+    public void setPgDrawableRes(@DrawableRes int pgDrawableRes) {
+        this.pgDrawable = ContextCompat.getDrawable(mContext, pgDrawableRes);
     }
     
     public Drawable getSliderBg() {

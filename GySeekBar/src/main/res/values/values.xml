@@ -11,6 +11,8 @@
         <attr name="open_bg_cap" format="boolean" />
         <!--进度条颜色-->
         <attr name="pg_color" format="color|reference" />
+        <!--进度条自定义背景-->
+        <attr name="pg_drawable" format="reference" />
         <!--滑块背景-->
         <attr name="slider_bg" format="reference" />
         <!--滑块宽度-->

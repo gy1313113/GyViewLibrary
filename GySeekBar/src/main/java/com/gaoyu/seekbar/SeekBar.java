@@ -100,6 +100,7 @@ public class SeekBar extends View implements ISeekBar {
             mConfig.setBgLineWidth(t.getDimensionPixelSize(R.styleable.SeekBar_bg_line_width, 20));
             mConfig.setOpenBgCap(t.getBoolean(R.styleable.SeekBar_open_bg_cap, true));
             mConfig.setPgColor(t.getColor(R.styleable.SeekBar_pg_color, 0xffbb86fc));
+            mConfig.setPgDrawable(t.getDrawable(R.styleable.SeekBar_pg_drawable));
             mConfig.setSliderBg(t.getDrawable(R.styleable.SeekBar_slider_bg));
             mConfig.setSliderWidth(t.getDimensionPixelSize(R.styleable.SeekBar_slider_width, 100));
             mConfig.setSliderHeight(t.getDimensionPixelSize(R.styleable.SeekBar_slider_height, 100));
@@ -209,12 +210,24 @@ public class SeekBar extends View implements ISeekBar {
      * 绘制经过的区域
      */
     private void drawPassArea(Canvas canvas) {
-        pgPaint.setColor(mConfig.getPgColor());
-        pgPaint.setStrokeWidth(mConfig.getBgLineWidth());
-        pgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
         sliderCenter = (getWidth() - headWidth * 2) * progress / 100f + headWidth;
-        if (progress > 0) {
-            canvas.drawLine(headWidth, 0, sliderCenter, 0, pgPaint);
+        if (mConfig.getPgDrawable() != null) {
+            Drawable pgDrawable = mConfig.getPgDrawable();
+            if (progress > 0) {
+                pgDrawable.setBounds(
+                    (int) headWidth,
+                    -mConfig.getBgLineWidth() / 2,
+                    (int) sliderCenter,
+                    mConfig.getBgLineWidth() / 2);
+                pgDrawable.draw(canvas);
+            }
+        } else {
+            pgPaint.setColor(mConfig.getPgColor());
+            pgPaint.setStrokeWidth(mConfig.getBgLineWidth());
+            pgPaint.setStrokeCap(mConfig.isOpenBgCap() ? Cap.ROUND : Cap.SQUARE);
+            if (progress > 0) {
+                canvas.drawLine(headWidth, 0, sliderCenter, 0, pgPaint);
+            }
         }
     }
     

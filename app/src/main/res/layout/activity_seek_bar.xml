@@ -28,7 +28,8 @@
         app:bg_drawable="@drawable/simple_bg"
         app:bg_line_width="100px"
         app:progress="0"
-        app:slider_bg="@mipmap/any_pic" />
+        app:slider_bg="@mipmap/any_pic"
+        app:pg_drawable="@drawable/simple_pg_bitmap"/>
 
     <View
         android:layout_width="match_parent"
