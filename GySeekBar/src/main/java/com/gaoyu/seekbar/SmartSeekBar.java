@@ -25,7 +25,7 @@ import androidx.annotation.RequiresApi;
  *
  * @author Created by gaoyu on 2022/5/23 8:37
  */
-public class SeekBar extends View implements ISeekBar {
+public class SmartSeekBar extends View implements ISeekBar {
     
     private SeekBarConfig mConfig;
     
@@ -65,25 +65,25 @@ public class SeekBar extends View implements ISeekBar {
         SliderStyle.NORMAL, SliderStyle.INCLUDE
     };
     
-    public SeekBar(Context context) {
+    public SmartSeekBar(Context context) {
         super(context);
         init();
     }
     
-    public SeekBar(Context context, @Nullable AttributeSet attrs) {
+    public SmartSeekBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
         initAttrs(attrs);
     }
     
-    public SeekBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SmartSeekBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
         initAttrs(attrs);
     }
     
     @RequiresApi(api = VERSION_CODES.LOLLIPOP)
-    public SeekBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SmartSeekBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
         initAttrs(attrs);
@@ -102,23 +102,23 @@ public class SeekBar extends View implements ISeekBar {
     
     private void initAttrs(AttributeSet attrs) {
         if (attrs != null) {
-            TypedArray t = getContext().obtainStyledAttributes(attrs, R.styleable.SeekBar);
-            mConfig.setBgColor(t.getColor(R.styleable.SeekBar_bg_color, 0xffbfbfbf));
-            mConfig.setBgDrawable(t.getDrawable(R.styleable.SeekBar_bg_drawable));
-            mConfig.setBgLineWidth(t.getDimensionPixelSize(R.styleable.SeekBar_bg_line_width, 20));
-            mConfig.setOpenBgCap(t.getBoolean(R.styleable.SeekBar_open_bg_cap, true));
-            mConfig.setPgColor(t.getColor(R.styleable.SeekBar_pg_color, 0xffbb86fc));
-            mConfig.setPgDrawable(t.getDrawable(R.styleable.SeekBar_pg_drawable));
-            mConfig.setSliderBg(t.getDrawable(R.styleable.SeekBar_slider_bg));
-            mConfig.setSliderStyle(sliderStyleArray[t.getInt(R.styleable.SeekBar_slider_style, 0)]);
-            mConfig.setSliderWidth(t.getDimensionPixelSize(R.styleable.SeekBar_slider_width, 100));
-            mConfig.setSliderHeight(t.getDimensionPixelSize(R.styleable.SeekBar_slider_height, 100));
-            mConfig.setTextColor(t.getColor(R.styleable.SeekBar_text_color, 0xff333333));
-            mConfig.setTextSize(t.getDimensionPixelSize(R.styleable.SeekBar_text_size, 20));
-            mConfig.setTextOffSet(t.getDimensionPixelSize(R.styleable.SeekBar_text_offset, 0));
-            mConfig.setMaxText(t.getInt(R.styleable.SeekBar_max_text, 5));
-            progress = t.getFloat(R.styleable.SeekBar_progress, 0);
-            mText = t.getString(R.styleable.SeekBar_text);
+            TypedArray t = getContext().obtainStyledAttributes(attrs, R.styleable.SmartSeekBar);
+            mConfig.setBgColor(t.getColor(R.styleable.SmartSeekBar_bg_color, 0xffbfbfbf));
+            mConfig.setBgDrawable(t.getDrawable(R.styleable.SmartSeekBar_bg_drawable));
+            mConfig.setBgLineWidth(t.getDimensionPixelSize(R.styleable.SmartSeekBar_bg_line_width, 20));
+            mConfig.setOpenBgCap(t.getBoolean(R.styleable.SmartSeekBar_open_bg_cap, true));
+            mConfig.setPgColor(t.getColor(R.styleable.SmartSeekBar_pg_color, 0xffbb86fc));
+            mConfig.setPgDrawable(t.getDrawable(R.styleable.SmartSeekBar_pg_drawable));
+            mConfig.setSliderBg(t.getDrawable(R.styleable.SmartSeekBar_slider_bg));
+            mConfig.setSliderStyle(sliderStyleArray[t.getInt(R.styleable.SmartSeekBar_slider_style, 0)]);
+            mConfig.setSliderWidth(t.getDimensionPixelSize(R.styleable.SmartSeekBar_slider_width, 100));
+            mConfig.setSliderHeight(t.getDimensionPixelSize(R.styleable.SmartSeekBar_slider_height, 100));
+            mConfig.setTextColor(t.getColor(R.styleable.SmartSeekBar_text_color, 0xff333333));
+            mConfig.setTextSize(t.getDimensionPixelSize(R.styleable.SmartSeekBar_text_size, 20));
+            mConfig.setTextOffSet(t.getDimensionPixelSize(R.styleable.SmartSeekBar_text_offset, 0));
+            mConfig.setMaxText(t.getInt(R.styleable.SmartSeekBar_max_text, 5));
+            progress = t.getFloat(R.styleable.SmartSeekBar_progress, 0);
+            mText = t.getString(R.styleable.SmartSeekBar_text);
             t.recycle();
         }
     }

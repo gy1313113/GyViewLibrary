@@ -1,16 +1,10 @@
 package com.gaoyu.gyviewlibrary;
 
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.gaoyu.seekbar.OnProgressChangeListener;
-import com.gaoyu.seekbar.OnSlideEndListener;
-import com.gaoyu.seekbar.SeekBar;
+import com.gaoyu.seekbar.SmartSeekBar;
 import com.gaoyu.seekbar.SeekBarConfig;
 
 import java.text.DecimalFormat;
@@ -26,8 +20,8 @@ import gaoyu.gyviewlibrary.R;
  */
 public class SeekBarActivity extends AppCompatActivity {
     
-    private SeekBar mSeekBar;
-    private SeekBar mSeekBar2;
+    private SmartSeekBar mSmartSeekBar;
+    private SmartSeekBar mSmartSeekBar2;
     private SeekBarConfig mConfig;
     private SeekBarConfig mConfig2;
     private DecimalFormat format;
@@ -47,26 +41,26 @@ public class SeekBarActivity extends AppCompatActivity {
     }
     
     private void initView() {
-        mSeekBar = findViewById(R.id.seek_bar);
-        mSeekBar2 = findViewById(R.id.seek_bar_2);
+        mSmartSeekBar = findViewById(R.id.seek_bar);
+        mSmartSeekBar2 = findViewById(R.id.seek_bar_2);
         mBtnRemoveSlider = findViewById(R.id.btn_remove_slider);
         mBtnReduction = findViewById(R.id.btn_reduction);
     }
     
     private void initData() {
         format = new DecimalFormat("0.0");
-        mConfig = mSeekBar.getSetting();
-        mConfig2 = mSeekBar2.getSetting();
-        mSeekBar.setText(format.format(mSeekBar.getProgress()) + "%");
-        mSeekBar2.setText(format.format(mSeekBar2.getProgress()) + "%");
+        mConfig = mSmartSeekBar.getSetting();
+        mConfig2 = mSmartSeekBar2.getSetting();
+        mSmartSeekBar.setText(format.format(mSmartSeekBar.getProgress()) + "%");
+        mSmartSeekBar2.setText(format.format(mSmartSeekBar2.getProgress()) + "%");
     }
     
     private void initEvent() {
-        mSeekBar.setOnProgressChangeListener(progress -> mSeekBar.setText(format.format(progress) + "%", false));
+        mSmartSeekBar.setOnProgressChangeListener(progress -> mSmartSeekBar.setText(format.format(progress) + "%", false));
         
-        mSeekBar2.setOnProgressChangeListener(progress -> mSeekBar2.setText(format.format(progress) + "%", false));
+        mSmartSeekBar2.setOnProgressChangeListener(progress -> mSmartSeekBar2.setText(format.format(progress) + "%", false));
         
-        mSeekBar2.setOnSlideEndListener(progress -> {
+        mSmartSeekBar2.setOnSlideEndListener(progress -> {
             if (progress == 100f) {
                 ok();
             } else {
@@ -84,25 +78,25 @@ public class SeekBarActivity extends AppCompatActivity {
                 mConfig2.setSliderBgRes(R.drawable.simple_slider);
                 mBtnRemoveSlider.setText("移除滑块");
             }
-            mSeekBar.invalidate();
-            mSeekBar2.invalidate();
+            mSmartSeekBar.invalidate();
+            mSmartSeekBar2.invalidate();
         });
         
         mBtnReduction.setOnClickListener(v -> {
             mConfig2.setSliderBgRes(R.drawable.simple_slider);
             mConfig2.setBgDrawableRes(R.drawable.simple_bg);
-            mSeekBar2.setText(format.format(mSeekBar2.getProgress()) + "%");
-            mSeekBar2.setOnProgressChangeListener(progress -> mSeekBar2.setText(format.format(progress) + "%", false));
+            mSmartSeekBar2.setText(format.format(mSmartSeekBar2.getProgress()) + "%");
+            mSmartSeekBar2.setOnProgressChangeListener(progress -> mSmartSeekBar2.setText(format.format(progress) + "%", false));
         });
     }
     
     private void animator() {
         ValueAnimator a = ValueAnimator.ofFloat(0, 1);
-        a.setDuration((long) (1000 * mSeekBar2.getProgress() / 100));
-        final float endProgress = mSeekBar2.getProgress();
+        a.setDuration((long) (1000 * mSmartSeekBar2.getProgress() / 100));
+        final float endProgress = mSmartSeekBar2.getProgress();
         a.addUpdateListener(animation -> {
             float value = (float) animation.getAnimatedValue();
-            mSeekBar2.setProgress((1 - value) * endProgress);
+            mSmartSeekBar2.setProgress((1 - value) * endProgress);
         });
         a.start();
     }
@@ -110,8 +104,8 @@ public class SeekBarActivity extends AppCompatActivity {
     private void ok() {
         mConfig2.setSliderBg(null);
         mConfig2.setBgDrawableRes(R.drawable.simple_ok);
-        mSeekBar2.setText(null,false);
-        mSeekBar2.removeOnProgressChangeListener();
-        mSeekBar2.setProgress(0);
+        mSmartSeekBar2.setText(null,false);
+        mSmartSeekBar2.removeOnProgressChangeListener();
+        mSmartSeekBar2.setProgress(0);
     }
 }

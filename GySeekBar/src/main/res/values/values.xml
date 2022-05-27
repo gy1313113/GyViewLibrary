@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="SeekBar">
+    <declare-styleable name="SmartSeekBar">
         <!--背景条颜色-->
         <attr name="bg_color" format="color|reference" />
         <!--背景条自定义背景-->
