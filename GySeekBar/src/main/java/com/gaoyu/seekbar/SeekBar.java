@@ -59,6 +59,8 @@ public class SeekBar extends View implements ISeekBar {
     
     private OnProgressChangeListener mProgressChangeListener;
     
+    private OnSlideEndListener mSlideEndListener;
+    
     static final SliderStyle[] sliderStyleArray = {
         SliderStyle.NORMAL, SliderStyle.INCLUDE
     };
@@ -357,6 +359,11 @@ public class SeekBar extends View implements ISeekBar {
                     setProgress(progress);
                 }
                 break;
+            case MotionEvent.ACTION_UP:
+                if (mSlideEndListener != null) {
+                    mSlideEndListener.onEnd(progress);
+                }
+                break;
         }
         lastX = x;
         return true;
@@ -402,5 +409,9 @@ public class SeekBar extends View implements ISeekBar {
     
     public void setOnProgressChangeListener(OnProgressChangeListener listener) {
         this.mProgressChangeListener = listener;
+    }
+    
+    public void setOnSlideEndListener(OnSlideEndListener listener) {
+        this.mSlideEndListener = listener;
     }
 }
