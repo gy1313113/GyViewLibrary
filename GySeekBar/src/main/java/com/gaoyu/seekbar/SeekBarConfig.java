@@ -48,6 +48,10 @@ public class SeekBarConfig {
      */
     private Drawable sliderBg;
     /**
+     * 当前滑块模式
+     */
+    private SliderStyle mSliderStyle;
+    /**
      * 滑块宽度(像素 PX)
      */
     private int sliderWidth;
@@ -75,6 +79,20 @@ public class SeekBarConfig {
      * 设置最大的文本数量
      */
     private int maxText;
+    
+    /**
+     * 滑块的模式
+     */
+    public enum SliderStyle {
+        /**
+         * 正常模式:水平方向上，滑块的中心始终在背景条内
+         */
+        NORMAL,
+        /**
+         * 包裹模式:水平方向上，整个滑块始终在背景条内
+         */
+        INCLUDE
+    }
     
     public SeekBarConfig(Context context) {
         this.mContext = context;
@@ -214,6 +232,19 @@ public class SeekBarConfig {
      */
     public void setSliderBgRes(@DrawableRes int sliderBgRes) {
         this.sliderBg = ContextCompat.getDrawable(mContext, sliderBgRes);
+    }
+    
+    public SliderStyle getSliderStyle() {
+        return mSliderStyle;
+    }
+    
+    /**
+     * 设置当前滑块模式
+     *
+     * @param sliderStyle 滑块模式
+     */
+    public void setSliderStyle(SliderStyle sliderStyle) {
+        mSliderStyle = sliderStyle;
     }
     
     public int getSliderWidth() {

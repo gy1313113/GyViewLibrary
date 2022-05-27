@@ -15,6 +15,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.gaoyu.seekbar.SeekBarConfig.SliderStyle;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
@@ -56,6 +58,10 @@ public class SeekBar extends View implements ISeekBar {
     private String mText;
     
     private OnProgressChangeListener mProgressChangeListener;
+    
+    static final SliderStyle[] sliderStyleArray = {
+        SliderStyle.NORMAL, SliderStyle.INCLUDE
+    };
     
     public SeekBar(Context context) {
         super(context);
@@ -102,6 +108,7 @@ public class SeekBar extends View implements ISeekBar {
             mConfig.setPgColor(t.getColor(R.styleable.SeekBar_pg_color, 0xffbb86fc));
             mConfig.setPgDrawable(t.getDrawable(R.styleable.SeekBar_pg_drawable));
             mConfig.setSliderBg(t.getDrawable(R.styleable.SeekBar_slider_bg));
+            mConfig.setSliderStyle(sliderStyleArray[t.getInt(R.styleable.SeekBar_slider_style, 0)]);
             mConfig.setSliderWidth(t.getDimensionPixelSize(R.styleable.SeekBar_slider_width, 100));
             mConfig.setSliderHeight(t.getDimensionPixelSize(R.styleable.SeekBar_slider_height, 100));
             mConfig.setTextColor(t.getColor(R.styleable.SeekBar_text_color, 0xff333333));
@@ -178,25 +185,35 @@ public class SeekBar extends View implements ISeekBar {
      * 绘制背景
      */
     private void drawBackground(Canvas canvas) {
+        //确定滑块模式，防止空指针，默认普通模式
+        if (mConfig.getSliderStyle() == null) {
+            mConfig.setSliderStyle(SliderStyle.NORMAL);
+        }
+        //获取文本宽度
         float textWidth;
         if (mConfig.getMaxText() > 0) {
             textWidth = mConfig.getMaxText() * mConfig.getTextSize();
         } else {
             textWidth = mText.length() * mConfig.getTextSize();
         }
+        //确定背景条头和尾的预留空间，确保能完整显示滑块、文本和线帽
         headWidth = 0;
         headWidth = Math.max(headWidth, textWidth / 2f);
-        headWidth = Math.max(headWidth, mConfig.getSliderWidth() / 2f);
+        if (mConfig.getSliderStyle() == SliderStyle.NORMAL) {
+            headWidth = Math.max(headWidth, mConfig.getSliderWidth() / 2f);
+        }
         if (mConfig.isOpenBgCap() && mConfig.getBgDrawable() == null) {
             headWidth = Math.max(headWidth, mConfig.getBgLineWidth() / 2f);
         }
+        //绘制背景条
         if (mConfig.getBgDrawable() != null) {
             Drawable bgDrawable = mConfig.getBgDrawable();
             bgDrawable.setBounds(
                 (int) headWidth,
                 -mConfig.getBgLineWidth() / 2,
                 (int) (getWidth() - headWidth),
-                mConfig.getBgLineWidth() / 2);
+                mConfig.getBgLineWidth() / 2
+            );
             bgDrawable.draw(canvas);
         } else {
             bgPaint.setColor(mConfig.getBgColor());
@@ -210,7 +227,17 @@ public class SeekBar extends View implements ISeekBar {
      * 绘制经过的区域
      */
     private void drawPassArea(Canvas canvas) {
-        sliderCenter = (getWidth() - headWidth * 2) * progress / 100f + headWidth;
+        //确定滑块中心
+        switch (mConfig.getSliderStyle()) {
+            case NORMAL:
+                sliderCenter = (getWidth() - headWidth * 2) * progress / 100f + headWidth;
+                break;
+            case INCLUDE:
+                sliderCenter = (getWidth() - headWidth * 2 - mConfig.getSliderWidth()) * progress / 100f
+                    + headWidth + (mConfig.getSliderWidth() / 2f);
+                break;
+        }
+        //绘制经过区域
         if (mConfig.getPgDrawable() != null) {
             Drawable pgDrawable = mConfig.getPgDrawable();
             if (progress > 0) {
@@ -218,7 +245,8 @@ public class SeekBar extends View implements ISeekBar {
                     (int) headWidth,
                     -mConfig.getBgLineWidth() / 2,
                     (int) sliderCenter,
-                    mConfig.getBgLineWidth() / 2);
+                    mConfig.getBgLineWidth() / 2
+                );
                 pgDrawable.draw(canvas);
             }
         } else {
@@ -257,7 +285,13 @@ public class SeekBar extends View implements ISeekBar {
             if (getHeight() < h) {
                 h = getHeight();
             }
-            slider.setBounds((int) sliderCenter - w / 2, -h / 2, (int) sliderCenter + w / 2, h / 2);
+            //绘制滑块
+            slider.setBounds(
+                (int) sliderCenter - w / 2,
+                -h / 2,
+                (int) sliderCenter + w / 2,
+                h / 2
+            );
             slider.draw(canvas);
             
             Rect f = slider.getBounds();
@@ -283,7 +317,8 @@ public class SeekBar extends View implements ISeekBar {
                 Math.min(Math.max(mConfig.getMaxText(), 1), mText.length()),
                 sliderCenter,
                 mConfig.getTextOffSet() - fontMetrics.ascent / 2f,
-                textPaint);
+                textPaint
+            );
         }
     }
     

@@ -15,6 +15,11 @@
         <attr name="pg_drawable" format="reference" />
         <!--滑块背景-->
         <attr name="slider_bg" format="reference" />
+        <!--滑块模式-->
+        <attr name="slider_style" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="include" value="1" />
+        </attr>
         <!--滑块宽度-->
         <attr name="slider_width" format="dimension|reference" />
         <!--滑块高度-->

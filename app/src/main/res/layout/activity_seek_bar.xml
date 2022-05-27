@@ -27,9 +27,26 @@
         android:layout_marginBottom="20px"
         app:bg_drawable="@drawable/simple_bg"
         app:bg_line_width="100px"
+        app:pg_drawable="@drawable/simple_pg_bitmap"
+        app:progress="0"
+        app:slider_bg="@mipmap/any_pic" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:background="@color/bg_color_gray_white_tint" />
+
+    <com.gaoyu.seekbar.SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
+        android:layout_marginBottom="20px"
+        app:bg_drawable="@drawable/simple_bg"
+        app:bg_line_width="100px"
+        app:pg_drawable="@drawable/simple_pg_bitmap"
         app:progress="0"
         app:slider_bg="@mipmap/any_pic"
-        app:pg_drawable="@drawable/simple_pg_bitmap"/>
+        app:slider_style="include" />
 
     <View
         android:layout_width="match_parent"
@@ -40,11 +57,37 @@
         android:id="@+id/seek_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100px"
+        android:layout_marginTop="45px"
+        android:layout_marginBottom="45px"
         app:max_text="6"
         app:slider_bg="@drawable/simple_slider"
         app:slider_height="50px"
         app:text_offset="-2px" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:background="@color/bg_color_gray_white_tint" />
+
+    <com.gaoyu.seekbar.SeekBar
+        android:id="@+id/seek_bar_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
+        android:layout_marginBottom="20px"
+        app:max_text="6"
+        app:slider_bg="@drawable/simple_slider"
+        app:bg_drawable="@drawable/simple_bg"
+        app:pg_drawable="@drawable/simple_pg"
+        app:bg_line_width="100px"
+        app:slider_height="100px"
+        app:text_offset="-2px"
+        app:slider_style="include"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:background="@color/bg_color_gray_white_tint" />
 
     <View
         android:layout_width="match_parent"
