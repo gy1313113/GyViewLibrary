@@ -114,11 +114,12 @@
             android:layout_height="match_parent" />
 
         <Button
-            android:id="@+id/btn_data"
+            android:id="@+id/btn_reduction"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/black"
+            android:text="还原"
             android:textSize="37px" />
     </LinearLayout>
 

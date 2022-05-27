@@ -411,7 +411,15 @@ public class SeekBar extends View implements ISeekBar {
         this.mProgressChangeListener = listener;
     }
     
+    public void removeOnProgressChangeListener() {
+        this.mProgressChangeListener = null;
+    }
+    
     public void setOnSlideEndListener(OnSlideEndListener listener) {
         this.mSlideEndListener = listener;
+    }
+    
+    public void removeOnSlideEndListener() {
+        this.mSlideEndListener = null;
     }
 }

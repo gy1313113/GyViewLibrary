@@ -1,5 +1,8 @@
 package com.gaoyu.gyviewlibrary;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +32,7 @@ public class SeekBarActivity extends AppCompatActivity {
     private SeekBarConfig mConfig2;
     private DecimalFormat format;
     private Button mBtnRemoveSlider;
+    private Button mBtnReduction;
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class SeekBarActivity extends AppCompatActivity {
         mSeekBar = findViewById(R.id.seek_bar);
         mSeekBar2 = findViewById(R.id.seek_bar_2);
         mBtnRemoveSlider = findViewById(R.id.btn_remove_slider);
+        mBtnReduction = findViewById(R.id.btn_reduction);
     }
     
     private void initData() {
@@ -62,7 +67,11 @@ public class SeekBarActivity extends AppCompatActivity {
         mSeekBar2.setOnProgressChangeListener(progress -> mSeekBar2.setText(format.format(progress) + "%", false));
         
         mSeekBar2.setOnSlideEndListener(progress -> {
-            mSeekBar2.setProgress(0);
+            if (progress == 100f) {
+                ok();
+            } else {
+                animator();
+            }
         });
         
         mBtnRemoveSlider.setOnClickListener(v -> {
@@ -78,9 +87,31 @@ public class SeekBarActivity extends AppCompatActivity {
             mSeekBar.invalidate();
             mSeekBar2.invalidate();
         });
+        
+        mBtnReduction.setOnClickListener(v -> {
+            mConfig2.setSliderBgRes(R.drawable.simple_slider);
+            mConfig2.setBgDrawableRes(R.drawable.simple_bg);
+            mSeekBar2.setText(format.format(mSeekBar2.getProgress()) + "%");
+            mSeekBar2.setOnProgressChangeListener(progress -> mSeekBar2.setText(format.format(progress) + "%", false));
+        });
     }
     
     private void animator() {
+        ValueAnimator a = ValueAnimator.ofFloat(0, 1);
+        a.setDuration((long) (1000 * mSeekBar2.getProgress() / 100));
+        final float endProgress = mSeekBar2.getProgress();
+        a.addUpdateListener(animation -> {
+            float value = (float) animation.getAnimatedValue();
+            mSeekBar2.setProgress((1 - value) * endProgress);
+        });
+        a.start();
+    }
     
+    private void ok() {
+        mConfig2.setSliderBg(null);
+        mConfig2.setBgDrawableRes(R.drawable.simple_ok);
+        mSeekBar2.setText(null,false);
+        mSeekBar2.removeOnProgressChangeListener();
+        mSeekBar2.setProgress(0);
     }
 }
