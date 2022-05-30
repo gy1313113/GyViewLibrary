@@ -2,39 +2,39 @@
 <resources>
     <declare-styleable name="SmartSeekBar">
         <!--背景条颜色-->
-        <attr name="bg_color" format="color|reference" />
+        <attr name="ssb_bg_color" format="color|reference" />
         <!--背景条自定义背景-->
-        <attr name="bg_drawable" format="reference" />
+        <attr name="ssb_bg_drawable" format="reference" />
         <!--背景条粗细-->
-        <attr name="bg_line_width" format="dimension|reference" />
+        <attr name="ssb_bg_line_width" format="dimension|reference" />
         <!--背景条线帽-->
-        <attr name="open_bg_cap" format="boolean" />
+        <attr name="ssb_open_bg_cap" format="boolean" />
         <!--进度条颜色-->
-        <attr name="pg_color" format="color|reference" />
+        <attr name="ssb_pg_color" format="color|reference" />
         <!--进度条自定义背景-->
-        <attr name="pg_drawable" format="reference" />
+        <attr name="ssb_pg_drawable" format="reference" />
         <!--滑块背景-->
-        <attr name="slider_bg" format="reference" />
+        <attr name="ssb_slider_bg" format="reference" />
         <!--滑块模式-->
-        <attr name="slider_style" format="enum">
+        <attr name="ssb_slider_style" format="enum">
             <enum name="normal" value="0" />
             <enum name="include" value="1" />
         </attr>
         <!--滑块宽度-->
-        <attr name="slider_width" format="dimension|reference" />
+        <attr name="ssb_slider_width" format="dimension|reference" />
         <!--滑块高度-->
-        <attr name="slider_height" format="dimension|reference" />
+        <attr name="ssb_slider_height" format="dimension|reference" />
         <!--文本颜色-->
-        <attr name="text_color" format="color|reference" />
+        <attr name="ssb_text_color" format="color|reference" />
         <!--文本大小-->
-        <attr name="text_size" format="dimension|reference" />
+        <attr name="ssb_text_size" format="dimension|reference" />
         <!--文本偏移-->
-        <attr name="text_offset" format="dimension|reference" />
+        <attr name="ssb_text_offset" format="dimension|reference" />
         <!--最大文本数量-->
-        <attr name="max_text" format="integer" />
+        <attr name="ssb_max_text" format="integer" />
         <!--当前进度-->
-        <attr name="progress" format="float" />
+        <attr name="ssb_progress" format="float" />
         <!--文本-->
-        <attr name="text" format="string" />
+        <attr name="ssb_text" format="string" />
     </declare-styleable>
 </resources>

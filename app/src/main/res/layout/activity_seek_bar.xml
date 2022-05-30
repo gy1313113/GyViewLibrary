@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20px"
         android:layout_marginBottom="20px"
-        app:progress="50"
-        app:slider_bg="@mipmap/any_pic" />
+        app:ssb_progress="50"
+        app:ssb_slider_bg="@mipmap/any_pic" />
 
     <View
         android:layout_width="match_parent"
@@ -25,11 +25,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20px"
         android:layout_marginBottom="20px"
-        app:bg_drawable="@drawable/simple_bg"
-        app:bg_line_width="100px"
-        app:pg_drawable="@drawable/simple_pg_bitmap"
-        app:progress="0"
-        app:slider_bg="@mipmap/any_pic" />
+        app:ssb_bg_drawable="@drawable/simple_bg"
+        app:ssb_bg_line_width="100px"
+        app:ssb_pg_drawable="@drawable/simple_pg_bitmap"
+        app:ssb_progress="0"
+        app:ssb_slider_bg="@mipmap/any_pic" />
 
     <View
         android:layout_width="match_parent"
@@ -41,12 +41,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20px"
         android:layout_marginBottom="20px"
-        app:bg_drawable="@drawable/simple_bg"
-        app:bg_line_width="100px"
-        app:pg_drawable="@drawable/simple_pg_bitmap"
-        app:progress="0"
-        app:slider_bg="@mipmap/any_pic"
-        app:slider_style="include" />
+        app:ssb_bg_drawable="@drawable/simple_bg"
+        app:ssb_bg_line_width="100px"
+        app:ssb_pg_drawable="@drawable/simple_pg_bitmap"
+        app:ssb_progress="0"
+        app:ssb_slider_bg="@mipmap/any_pic"
+        app:ssb_slider_style="include" />
 
     <View
         android:layout_width="match_parent"
@@ -59,10 +59,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="45px"
         android:layout_marginBottom="45px"
-        app:max_text="6"
-        app:slider_bg="@drawable/simple_slider"
-        app:slider_height="50px"
-        app:text_offset="-2px" />
+        app:ssb_max_text="6"
+        app:ssb_slider_bg="@drawable/simple_slider"
+        app:ssb_slider_height="50px"
+        app:ssb_text_offset="-2px" />
 
     <View
         android:layout_width="match_parent"
@@ -75,14 +75,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20px"
         android:layout_marginBottom="20px"
-        app:max_text="6"
-        app:slider_bg="@drawable/simple_slider"
-        app:bg_drawable="@drawable/simple_bg"
-        app:pg_drawable="@drawable/simple_pg"
-        app:bg_line_width="100px"
-        app:slider_height="100px"
-        app:text_offset="-2px"
-        app:slider_style="include"/>
+        app:ssb_bg_drawable="@drawable/simple_bg"
+        app:ssb_bg_line_width="100px"
+        app:ssb_max_text="6"
+        app:ssb_pg_drawable="@drawable/simple_pg"
+        app:ssb_slider_bg="@drawable/simple_slider"
+        app:ssb_slider_height="100px"
+        app:ssb_slider_style="include"
+        app:ssb_text_offset="-2px" />
 
     <View
         android:layout_width="match_parent"

@@ -103,22 +103,22 @@ public class SmartSeekBar extends View implements ISeekBar {
     private void initAttrs(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray t = getContext().obtainStyledAttributes(attrs, R.styleable.SmartSeekBar);
-            mConfig.setBgColor(t.getColor(R.styleable.SmartSeekBar_bg_color, 0xffbfbfbf));
-            mConfig.setBgDrawable(t.getDrawable(R.styleable.SmartSeekBar_bg_drawable));
-            mConfig.setBgLineWidth(t.getDimensionPixelSize(R.styleable.SmartSeekBar_bg_line_width, 20));
-            mConfig.setOpenBgCap(t.getBoolean(R.styleable.SmartSeekBar_open_bg_cap, true));
-            mConfig.setPgColor(t.getColor(R.styleable.SmartSeekBar_pg_color, 0xffbb86fc));
-            mConfig.setPgDrawable(t.getDrawable(R.styleable.SmartSeekBar_pg_drawable));
-            mConfig.setSliderBg(t.getDrawable(R.styleable.SmartSeekBar_slider_bg));
-            mConfig.setSliderStyle(sliderStyleArray[t.getInt(R.styleable.SmartSeekBar_slider_style, 0)]);
-            mConfig.setSliderWidth(t.getDimensionPixelSize(R.styleable.SmartSeekBar_slider_width, 100));
-            mConfig.setSliderHeight(t.getDimensionPixelSize(R.styleable.SmartSeekBar_slider_height, 100));
-            mConfig.setTextColor(t.getColor(R.styleable.SmartSeekBar_text_color, 0xff333333));
-            mConfig.setTextSize(t.getDimensionPixelSize(R.styleable.SmartSeekBar_text_size, 20));
-            mConfig.setTextOffSet(t.getDimensionPixelSize(R.styleable.SmartSeekBar_text_offset, 0));
-            mConfig.setMaxText(t.getInt(R.styleable.SmartSeekBar_max_text, 5));
-            progress = t.getFloat(R.styleable.SmartSeekBar_progress, 0);
-            mText = t.getString(R.styleable.SmartSeekBar_text);
+            mConfig.setBgColor(t.getColor(R.styleable.SmartSeekBar_ssb_bg_color, 0xffbfbfbf));
+            mConfig.setBgDrawable(t.getDrawable(R.styleable.SmartSeekBar_ssb_bg_drawable));
+            mConfig.setBgLineWidth(t.getDimensionPixelSize(R.styleable.SmartSeekBar_ssb_bg_line_width, 20));
+            mConfig.setOpenBgCap(t.getBoolean(R.styleable.SmartSeekBar_ssb_open_bg_cap, true));
+            mConfig.setPgColor(t.getColor(R.styleable.SmartSeekBar_ssb_pg_color, 0xffbb86fc));
+            mConfig.setPgDrawable(t.getDrawable(R.styleable.SmartSeekBar_ssb_pg_drawable));
+            mConfig.setSliderBg(t.getDrawable(R.styleable.SmartSeekBar_ssb_slider_bg));
+            mConfig.setSliderStyle(sliderStyleArray[t.getInt(R.styleable.SmartSeekBar_ssb_slider_style, 0)]);
+            mConfig.setSliderWidth(t.getDimensionPixelSize(R.styleable.SmartSeekBar_ssb_slider_width, 100));
+            mConfig.setSliderHeight(t.getDimensionPixelSize(R.styleable.SmartSeekBar_ssb_slider_height, 100));
+            mConfig.setTextColor(t.getColor(R.styleable.SmartSeekBar_ssb_text_color, 0xff333333));
+            mConfig.setTextSize(t.getDimensionPixelSize(R.styleable.SmartSeekBar_ssb_text_size, 20));
+            mConfig.setTextOffSet(t.getDimensionPixelSize(R.styleable.SmartSeekBar_ssb_text_offset, 0));
+            mConfig.setMaxText(t.getInt(R.styleable.SmartSeekBar_ssb_max_text, 5));
+            progress = t.getFloat(R.styleable.SmartSeekBar_ssb_progress, 0);
+            mText = t.getString(R.styleable.SmartSeekBar_ssb_text);
             t.recycle();
         }
     }
