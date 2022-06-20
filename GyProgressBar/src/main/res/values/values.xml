@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RingProgressBar">
+        <!--背景条颜色-->
+        <attr name="rpb_bg_ring_color" format="color"/>
+        <!--环的颜色-->
+        <attr name="rpb_ring_color" format="color"/>
+        <!--是否要线帽-->
+        <attr name="rpb_ring_head" format="boolean"/>
+        <!--背景环的直径-->
+        <attr name="rpb_bg_diameter" format="dimension|reference"/>
+        <!--背景环的宽-->
+        <attr name="rpb_bg_ring_width" format="dimension|reference"/>
+
+        <attr name="android:layout_width"/>
+        <attr name="android:layout_height"/>
+    </declare-styleable>
+</resources>

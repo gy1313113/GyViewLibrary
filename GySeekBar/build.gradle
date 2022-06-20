@@ -36,6 +36,7 @@ afterEvaluate {
         publications {
             // Creates a Maven publication called "release".
             release(MavenPublication) {
+                // 这个 components 表示 library构建成功后对应的Android组件
                 from components.release
                 groupId = 'com.github.gy1313113'
                 artifactId = 'SeekBar'

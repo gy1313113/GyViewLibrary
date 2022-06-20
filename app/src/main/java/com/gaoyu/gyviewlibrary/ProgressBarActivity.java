@@ -68,8 +68,6 @@ public class ProgressBarActivity extends AppCompatActivity {
         float[] radius = {0, 1f};
         config = mProgressBar.getSetting();
         config.setBgRingColorRes(R.color.bg_color_gray_white_tint);
-        config.setBgDiameter(600f);
-        config.setBgRingWidth(80f);
         config.setRingShader(new SweepGradient(0, 0, color, radius));
         mTvEnd.setText("目标进度:" + endProgress + "%");
         mTvNow.setText("当前进度:" + "0.0" + "%");

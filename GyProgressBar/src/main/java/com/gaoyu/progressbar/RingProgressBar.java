@@ -1,12 +1,11 @@
 package com.gaoyu.progressbar;
 
 import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
@@ -17,8 +16,6 @@ import android.graphics.Shader;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.view.View;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -76,33 +73,46 @@ public class RingProgressBar extends View implements IProgressBar {
     
     public RingProgressBar(Context context) {
         super(context);
-        init();
+        init(context, null);
     }
     
     public RingProgressBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs);
     }
     
     public RingProgressBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context, attrs);
     }
     
     @RequiresApi(api = VERSION_CODES.LOLLIPOP)
     public RingProgressBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
+        init(context, attrs);
     }
     
-    private void init() {
+    private void init(Context context, AttributeSet attrs) {
         mConfig = new ProgressConfig(getContext());
+        initAttrs(context, attrs);
         bgRingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bgRingPaint.setStyle(Style.STROKE);
         ringPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         ringPaint.setStyle(Style.FILL);
         headPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         headPaint.setStyle(Style.FILL);
+    }
+    
+    private void initAttrs(Context context, AttributeSet attrs) {
+        if (attrs != null) {
+            TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.RingProgressBar);
+            mConfig.setBgDiameter(t.getDimensionPixelSize(R.styleable.RingProgressBar_rpb_bg_diameter, 600));
+            mConfig.setBgRingWidth(t.getDimensionPixelSize(R.styleable.RingProgressBar_rpb_bg_ring_width, 80));
+            mConfig.setBgRingColor(t.getColor(R.styleable.RingProgressBar_rpb_bg_ring_color, 0xff666666));
+            mConfig.setRingColor(t.getColor(R.styleable.RingProgressBar_rpb_ring_color, 0xff40a9ff));
+            mConfig.setRingHead(t.getBoolean(R.styleable.RingProgressBar_rpb_ring_head, false));
+            t.recycle();
+        }
     }
     
     @Override
