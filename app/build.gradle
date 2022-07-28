@@ -39,4 +39,5 @@ dependencies {
     implementation project(':GyRoseChart')
     implementation project(':GyProgressBar')
     implementation project(':GySeekBar')
+    implementation project(':GySignaturePad')
 }
