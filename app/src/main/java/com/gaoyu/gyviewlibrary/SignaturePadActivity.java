@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.gaoyu.signaturepad.ImageSaveUtil;
+import com.gaoyu.signaturepad.ImageSaveUtil.BitmapSaveListener;
 import com.gaoyu.signaturepad.SignaturePad;
 
 import androidx.annotation.Nullable;
@@ -45,6 +48,7 @@ public class SignaturePadActivity extends AppCompatActivity {
     private void initData() {
         sp.getConfig().setBgColor(Color.parseColor("#40a9FF"));
         sp.getConfig().setTextColor(Color.parseColor("#333333"));
+        sp.setFileName("签名" + System.currentTimeMillis());
     }
     
     private void initEvent() {
@@ -64,6 +68,18 @@ public class SignaturePadActivity extends AppCompatActivity {
                         sp.saveSignature();
                     }
                 }
+            }
+        });
+        
+        sp.setBitmapSaveListener(new BitmapSaveListener() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(SignaturePadActivity.this, "保存成功", Toast.LENGTH_LONG).show();
+            }
+            
+            @Override
+            public void onFailed() {
+                Toast.makeText(SignaturePadActivity.this, "保存失败", Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -2,21 +2,13 @@ package com.gaoyu.signaturepad
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
-import android.net.Uri
-import android.os.Environment
-import android.provider.MediaStore
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
 
 
 /**
@@ -38,18 +30,23 @@ open class SignaturePad : View {
     /**
      * 文本画笔
      */
-    private val textPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     /**
      * 配置文件
      */
-    open var config: SignaturePadConfig = SignaturePadConfig()
+    open var config = SignaturePadConfig()
 
-    private var path: Path = Path()
+    private var path = Path()
 
     private var cacheBitmap: Bitmap? = null
 
     private var cacheCanvas: Canvas? = null
+
+    /**
+     * 图片保存的设置工具
+     */
+    private val imageUtil = ImageSaveUtil
 
     init {
         textPaint.strokeCap = Paint.Cap.ROUND
@@ -142,37 +139,20 @@ open class SignaturePad : View {
         if (cacheCanvas == null || cacheBitmap == null) {
             return
         }
-        //先判断SD卡是否正常
-        val state = Environment.getExternalStorageState()
-        if (state.equals(Environment.MEDIA_MOUNTED)) {
-            val dicPath =
-                Environment.getExternalStorageDirectory().absolutePath + File.separator + Environment.DIRECTORY_PICTURES + File.separator
-            val dic = File(dicPath)
-            val fileName = System.currentTimeMillis().toString() + ".jpg"
-            val file = File(dic, fileName)
+        imageUtil.saveBitmap(context, cacheBitmap!!, Bitmap.CompressFormat.JPEG, 50, true)
+    }
 
-            cacheCanvas!!.save()
-            cacheCanvas!!.restore()
+    /**
+     * 设置图片保存成功和失败后的操作
+     */
+    open fun setBitmapSaveListener(listener: ImageSaveUtil.BitmapSaveListener) {
+        imageUtil.setBitmapSaveListener(listener)
+    }
 
-            val fos: FileOutputStream?
-            try {
-                fos = FileOutputStream(file)
-                if (cacheBitmap!!.compress(Bitmap.CompressFormat.JPEG, 50, fos)) {
-                    fos.flush()
-                    fos.close()
-                    //图片导入相册
-                    // MediaStore.Images.Media.insertImage(
-                    //     context.contentResolver,
-                    //     file.absolutePath, fileName, null
-                    // )
-                } else {
-                    fos.close()
-                }
-            } catch (e: FileNotFoundException) {
-                e.printStackTrace()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
+    /**
+     * 设置文件名，不要带后缀
+     */
+    open fun setFileName(name: String) {
+        imageUtil.setFileName(name)
     }
 }
