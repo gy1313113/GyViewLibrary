@@ -1,7 +1,13 @@
 package com.gaoyu.gyviewlibrary;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 import com.gaoyu.signaturepad.SignaturePad;
 
@@ -17,6 +23,7 @@ import gaoyu.gyviewlibrary.R;
 public class SignaturePadActivity extends AppCompatActivity {
     
     private SignaturePad sp;
+    private Button save;
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +39,7 @@ public class SignaturePadActivity extends AppCompatActivity {
     
     private void initView() {
         sp = findViewById(R.id.sp);
+        save = findViewById(R.id.btn_save);
     }
     
     private void initData() {
@@ -40,6 +48,23 @@ public class SignaturePadActivity extends AppCompatActivity {
     }
     
     private void initEvent() {
-    
+        save.setOnClickListener(v -> {
+            //现在Android10之后，都得动态获取权限
+            if (Build.VERSION.SDK_INT >= 23) {
+                int REQUEST_CODE_CONTACT = 101;
+                String[] permissions = {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                //验证是否许可权限
+                for (String str : permissions) {
+                    if (this.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
+                        //申请权限
+                        this.requestPermissions(permissions, REQUEST_CODE_CONTACT);
+                        return;
+                    } else {
+                        sp.saveSignature();
+                    }
+                }
+            }
+        });
     }
 }

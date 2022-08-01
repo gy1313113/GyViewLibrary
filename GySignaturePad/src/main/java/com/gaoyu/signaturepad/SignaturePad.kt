@@ -2,13 +2,22 @@ package com.gaoyu.signaturepad
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.*
-import android.graphics.drawable.Drawable
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Path
+import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewTreeObserver
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+
 
 /**
  * 手写签名板
@@ -124,5 +133,46 @@ open class SignaturePad : View {
             invalidate()
         }
         return true
+    }
+
+    /**
+     * 签名保存到相册，android10之后的WRITE_EXTERNAL_STORAGE权限需要自己动态获取
+     */
+    open fun saveSignature() {
+        if (cacheCanvas == null || cacheBitmap == null) {
+            return
+        }
+        //先判断SD卡是否正常
+        val state = Environment.getExternalStorageState()
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            val dicPath =
+                Environment.getExternalStorageDirectory().absolutePath + File.separator + Environment.DIRECTORY_PICTURES + File.separator
+            val dic = File(dicPath)
+            val fileName = System.currentTimeMillis().toString() + ".jpg"
+            val file = File(dic, fileName)
+
+            cacheCanvas!!.save()
+            cacheCanvas!!.restore()
+
+            val fos: FileOutputStream?
+            try {
+                fos = FileOutputStream(file)
+                if (cacheBitmap!!.compress(Bitmap.CompressFormat.JPEG, 50, fos)) {
+                    fos.flush()
+                    fos.close()
+                    //图片导入相册
+                    // MediaStore.Images.Media.insertImage(
+                    //     context.contentResolver,
+                    //     file.absolutePath, fileName, null
+                    // )
+                } else {
+                    fos.close()
+                }
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
     }
 }
