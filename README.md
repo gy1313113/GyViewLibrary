@@ -18,5 +18,11 @@
 
 使用示例`SeekBarActivity`
 
+#### 手写签名`SignaturePad`
+
+详情见`GySignaturePad`module
+
+使用示例`SignaturePadActivity`
+
 #### 其余的，敬请期待
 
