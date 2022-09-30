@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.Path.FillType;
 import android.graphics.PathMeasure;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
@@ -35,7 +36,7 @@ public class SvgPathAnimatorView extends View {
     private Path bodyPath, leftEyePath, rightEyePath, mouthPath;
     private PathMeasure bodyMeasure, leftEyeMeasure, rightEyeMeasure, mouthMeasure;
     private List<Path> recyclePathList;//路径回收列表
-    private Paint mPaint;
+    private Paint mPaint, mPaintFill;
     private ValueAnimator bodyAnimator, leftEyeAnimator, rightEyeAnimator, mouthAnimator;
     private float bodyAnimatorValue, leftEyeAnimatorValue, rightEyeAnimatorValue, mouthAnimatorValue;
     
@@ -61,7 +62,6 @@ public class SvgPathAnimatorView extends View {
     
     private void initView(@DrawableRes int resId) {
         VectorMasterDrawable drawable = new VectorMasterDrawable(getContext(), resId);
-        drawable.getFullPath();
         body = drawable.getPathModelByName("body");
         leftEye = drawable.getPathModelByName("left_eye");
         rightEye = drawable.getPathModelByName("right_eye");
@@ -88,7 +88,8 @@ public class SvgPathAnimatorView extends View {
     private void initPaint() {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Style.STROKE);
-        mPaint.setStrokeWidth(10);
+        mPaintFill = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintFill.setStyle(Style.FILL);
     }
     
     private void initAnimator() {
@@ -158,19 +159,35 @@ public class SvgPathAnimatorView extends View {
         super.onDraw(canvas);
         
         recyclePathList.get(0).reset();
-        bodyMeasure.getSegment(0, bodyAnimatorValue * bodyMeasure.getLength(), recyclePathList.get(0), true);
-        canvas.drawPath(recyclePathList.get(0), mPaint);
+        if (bodyAnimatorValue == 1) {
+            canvas.drawPath(bodyPath, mPaintFill);
+        } else {
+            bodyMeasure.getSegment(0, bodyAnimatorValue * bodyMeasure.getLength(), recyclePathList.get(0), true);
+            canvas.drawPath(recyclePathList.get(0), mPaint);
+        }
         
         recyclePathList.get(1).reset();
-        leftEyeMeasure.getSegment(0, leftEyeAnimatorValue * leftEyeMeasure.getLength(), recyclePathList.get(1), true);
-        canvas.drawPath(recyclePathList.get(1), mPaint);
+        if (leftEyeAnimatorValue == 1) {
+            canvas.drawPath(leftEyePath, mPaintFill);
+        } else {
+            leftEyeMeasure.getSegment(0, leftEyeAnimatorValue * leftEyeMeasure.getLength(), recyclePathList.get(1), true);
+            canvas.drawPath(recyclePathList.get(1), mPaint);
+        }
         
         recyclePathList.get(2).reset();
-        rightEyeMeasure.getSegment(0, rightEyeAnimatorValue * rightEyeMeasure.getLength(), recyclePathList.get(2), true);
-        canvas.drawPath(recyclePathList.get(2), mPaint);
+        if (rightEyeAnimatorValue == 1) {
+            canvas.drawPath(rightEyePath, mPaintFill);
+        } else {
+            rightEyeMeasure.getSegment(0, rightEyeAnimatorValue * rightEyeMeasure.getLength(), recyclePathList.get(2), true);
+            canvas.drawPath(recyclePathList.get(2), mPaint);
+        }
         
         recyclePathList.get(3).reset();
-        mouthMeasure.getSegment(0, mouthAnimatorValue * mouthMeasure.getLength(), recyclePathList.get(3), true);
-        canvas.drawPath(recyclePathList.get(3), mPaint);
+        if (mouthAnimatorValue == 1) {
+            canvas.drawPath(mouthPath, mPaintFill);
+        } else {
+            mouthMeasure.getSegment(0, mouthAnimatorValue * mouthMeasure.getLength(), recyclePathList.get(3), true);
+            canvas.drawPath(recyclePathList.get(3), mPaint);
+        }
     }
 }
