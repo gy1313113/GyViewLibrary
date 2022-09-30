@@ -1,27 +1,30 @@
 package com.gaoyu.gyviewlibrary.widgets;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.Path.FillType;
 import android.graphics.PathMeasure;
+import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.sdsmdg.harjot.vectormaster.VectorMasterDrawable;
-import com.sdsmdg.harjot.vectormaster.VectorMasterView;
 import com.sdsmdg.harjot.vectormaster.models.PathModel;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import gaoyu.gyviewlibrary.BuildConfig;
 import gaoyu.gyviewlibrary.R;
 
 /**
@@ -34,6 +37,7 @@ public class SvgPathAnimatorView extends View {
     
     private PathModel body, leftEye, rightEye, mouth;
     private Path bodyPath, leftEyePath, rightEyePath, mouthPath;
+    private Path fieldPath;//反射的path，用于测试一个问题
     private PathMeasure bodyMeasure, leftEyeMeasure, rightEyeMeasure, mouthMeasure;
     private List<Path> recyclePathList;//路径回收列表
     private Paint mPaint, mPaintFill;
@@ -75,6 +79,17 @@ public class SvgPathAnimatorView extends View {
         rightEyeMeasure = new PathMeasure(rightEyePath, false);
         mouthMeasure = new PathMeasure(mouthPath, false);
         
+        try {
+            if (Build.VERSION.SDK_INT < VERSION_CODES.S) {
+                Class<?> clazz = Class.forName("android.graphics.PathMeasure");
+                @SuppressLint("SoonBlockedPrivateApi") Field field = clazz.getDeclaredField("mPath");
+                field.setAccessible(true);
+                fieldPath = (Path) (field).get(rightEyeMeasure);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         recyclePathList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             recyclePathList.add(new Path());
@@ -93,10 +108,10 @@ public class SvgPathAnimatorView extends View {
     }
     
     private void initAnimator() {
-        bodyAnimator = ValueAnimator.ofFloat(0, 1).setDuration(2000);
-        leftEyeAnimator = ValueAnimator.ofFloat(0, 1).setDuration(1000);
-        rightEyeAnimator = ValueAnimator.ofFloat(0, 1).setDuration(1000);
-        mouthAnimator = ValueAnimator.ofFloat(0, 1).setDuration(1000);
+        bodyAnimator = ValueAnimator.ofFloat(0, 1).setDuration(4000);
+        leftEyeAnimator = ValueAnimator.ofFloat(0, 1).setDuration(4000);
+        rightEyeAnimator = ValueAnimator.ofFloat(0, 1).setDuration(4000);
+        mouthAnimator = ValueAnimator.ofFloat(0, 1).setDuration(4000);
         
         bodyAnimator.addUpdateListener(animation -> {
             bodyAnimatorValue = (float) animation.getAnimatedValue();
@@ -176,7 +191,11 @@ public class SvgPathAnimatorView extends View {
         
         recyclePathList.get(2).reset();
         if (rightEyeAnimatorValue == 1) {
-            canvas.drawPath(rightEyePath, mPaintFill);
+            // FIXME 这里有问题，pathMeasure的setSegment方法有问题，获取到的路径有缺失，但是pathMeasure里反射出来的mPath又是正常的，目前不清楚为什么，源码是C++的，看不了
+            // canvas.drawPath(rightEyePath, mPaintFill);
+            canvas.drawPath(fieldPath, mPaintFill);
+            // rightEyeMeasure.getSegment(0, rightEyeMeasure.getLength(), recyclePathList.get(2), true);
+            // canvas.drawPath(recyclePathList.get(2), mPaintFill);
         } else {
             rightEyeMeasure.getSegment(0, rightEyeAnimatorValue * rightEyeMeasure.getLength(), recyclePathList.get(2), true);
             canvas.drawPath(recyclePathList.get(2), mPaint);
